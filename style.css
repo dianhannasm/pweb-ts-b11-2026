@@ -1,0 +1,594 @@
+/* ==========================
+   LOGIN SEHATANTRI
+========================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body.halaman-login {
+  margin: 0;
+  min-height: 100vh;
+  padding: 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #17466f;
+  background: #dff8fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Bingkai utama */
+
+.login-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 680px;
+  overflow: hidden;
+  border: 1px solid #c9f0f2;
+  border-radius: 12px;
+  background:
+    radial-gradient(
+      ellipse at 100% 10%,
+      rgba(177, 246, 225, 0.65),
+      transparent 36%
+    ),
+    linear-gradient(125deg, #e9fbff, #f2fffc 65%, #dff9ef);
+}
+
+/* ==========================
+   PANEL KIRI
+========================== */
+
+.login-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 72px 50px 30px;
+  overflow: hidden;
+}
+
+.login-visual::before {
+  content: "";
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  right: -200px;
+  top: 20px;
+  border-radius: 50%;
+  background: rgba(193, 248, 229, 0.42);
+}
+
+.login-visual::after {
+  content: "";
+  position: absolute;
+  width: 440px;
+  height: 190px;
+  left: -90px;
+  bottom: -95px;
+  border-radius: 50%;
+  background: rgba(188, 247, 224, 0.4);
+}
+
+/* Logo dan nama */
+
+.brand {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  color: white;
+  font-size: 49px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow:
+    -5px 0 #45cfa9,
+    5px 0 #168ed0;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #1284bd;
+  font-size: 38px;
+  font-weight: 750;
+  letter-spacing: -1.5px;
+}
+
+.brand-subtitle {
+  margin: 5px 0 0;
+  color: #183f62;
+  font-size: 15px;
+}
+
+.brand-description {
+  margin-top: 18px;
+  color: #6389a5;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* Gambar rumah sakit */
+
+.hospital-image {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 112%;
+  max-width: 530px;
+  height: auto;
+  object-fit: contain;
+  margin-top: 12px;
+  margin-left: -25px;
+  mix-blend-mode: multiply;
+}
+
+/* Copyright */
+
+.copyright {
+  position: relative;
+  z-index: 2;
+  margin: auto 0 0;
+  padding-top: 20px;
+  color: #7397a7;
+  font-size: 10px;
+}
+
+/* ==========================
+   PANEL KANAN
+========================== */
+
+.login-form-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 35px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 36px 32px 30px;
+  border: 1px solid rgba(217, 238, 247, 0.9);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 12px 30px rgba(47, 142, 172, 0.09);
+}
+
+.login-card h2 {
+  margin: 0 0 5px;
+  color: #153b70;
+  font-size: 27px;
+  font-weight: 750;
+}
+
+.login-description {
+  margin: 0 0 27px;
+  color: #7893ac;
+  font-size: 12px;
+}
+
+/* Form */
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 49px;
+  border: 1px solid #d4e6f2;
+  border-radius: 9px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group:focus-within {
+  border-color: #24a9d0;
+  box-shadow: 0 0 0 3px rgba(36, 169, 208, 0.1);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  flex-shrink: 0;
+  color: #3779a8;
+  font-size: 18px;
+}
+
+.input-group input {
+  width: 100%;
+  height: 100%;
+  padding: 0 12px 0 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #204c70;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.input-group input::placeholder {
+  color: #809bb3;
+}
+
+/* Tombol login */
+
+#tombolLogin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 47px;
+  margin-top: 3px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(100deg, #25b9d0, #319ed2);
+  box-shadow: 0 5px 12px rgba(43, 166, 203, 0.12);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+#tombolLogin:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+#tombolLogin:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+#tombolLogin span {
+  font-size: 18px;
+}
+
+/* Pesan login */
+
+#pesan {
+  min-height: 16px;
+  margin: 0;
+  color: #5683a2;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* Footer login */
+
+.login-footer {
+  margin-top: 22px;
+  color: #8198ae;
+  text-align: center;
+  font-size: 11px;
+}
+
+.login-footer a {
+  color: #1689c5;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 760px) {
+  body.halaman-login {
+    padding: 12px;
+    align-items: flex-start;
+  }
+
+  .login-container {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .login-visual {
+    padding: 30px 24px 12px;
+  }
+
+  .brand h1 {
+    font-size: 30px;
+  }
+
+  .brand-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 38px;
+  }
+
+  .brand-description {
+    margin-top: 10px;
+  }
+
+  .hospital-image {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .copyright {
+    margin-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .login-form-section {
+    padding: 18px 16px 26px;
+  }
+
+  .login-card {
+    max-width: none;
+    padding: 25px 21px;
+  }
+
+  .login-card h2 {
+    font-size: 24px;
+  }
+}
+
+
+/* ========================================
+   SEHATANTRI - DASHBOARD ADMIN
+======================================== */
+
+/* Latar khusus halaman dashboard */
+body:not(.halaman-login) {
+  min-height: 100vh;
+  padding: 20px;
+  color: #193d63;
+  background:
+    radial-gradient(ellipse at 5% 0%, #d6f5ff, transparent 40%),
+    linear-gradient(135deg, #e9faff, #e9fff7);
+}
+
+/* Header dashboard */
+body:not(.halaman-login) > header {
+  max-width: 1500px;
+  min-height: 75px;
+  margin: 0 auto 20px;
+  padding: 18px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #dceef7;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 5px 20px rgba(50, 128, 165, 0.07);
+}
+
+body:not(.halaman-login) > header h1 {
+  margin: 0;
+  color: #168cc1;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+body:not(.halaman-login) > header p {
+  margin: 5px 0 0;
+  font-size: 12px;
+}
+
+/* Area konten */
+body:not(.halaman-login) > main {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+body:not(.halaman-login) main > h2 {
+  margin: 25px 0 12px;
+  color: #174b7a;
+  font-size: 21px;
+}
+
+body:not(.halaman-login) main > p {
+  font-size: 13px;
+}
+
+/* Panel formulir */
+body:not(.halaman-login) main form {
+  padding: 22px;
+  border: 1px solid #dcecf6;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 5px 18px rgba(49, 124, 164, 0.06);
+}
+
+/* Label */
+body:not(.halaman-login) main label {
+  display: block;
+  margin: 8px 0;
+  color: #315979;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Input dan dropdown */
+body:not(.halaman-login) main input,
+body:not(.halaman-login) main select {
+  width: 100%;
+  min-height: 41px;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid #d2e6f2;
+  border-radius: 8px;
+  background: #fbfdff;
+  color: #214d72;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+body:not(.halaman-login) main input:focus,
+body:not(.halaman-login) main select:focus {
+  border-color: #22afd0;
+  box-shadow: 0 0 0 3px rgba(34, 175, 208, 0.1);
+}
+
+/* Tombol utama */
+body:not(.halaman-login) main button {
+  min-height: 36px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(110deg, #20b8d0, #168fd0);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+body:not(.halaman-login) main button:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 4px 12px rgba(22, 143, 208, 0.18);
+  transform: translateY(-1px);
+}
+
+/* Tombol reset */
+#tombolResetAntrean {
+  background: linear-gradient(110deg, #ff8293, #ed526b) !important;
+}
+
+/* Pesan */
+#pesanAntrean,
+#pesanReset,
+#pesanTiket {
+  min-height: 18px;
+  margin: 10px 0;
+  color: #138c75;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Tabel layanan */
+body:not(.halaman-login) main table {
+  width: 100%;
+  margin: 15px 0 25px;
+  overflow: hidden;
+  border: 1px solid #dcecf6;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(49, 124, 164, 0.05);
+  font-size: 12px;
+}
+
+body:not(.halaman-login) main th {
+  padding: 13px 12px;
+  background: #edf8ff;
+  color: #28577e;
+  text-align: left;
+  font-size: 11px;
+  border-bottom: 1px solid #deedf6;
+}
+
+body:not(.halaman-login) main td {
+  padding: 12px;
+  color: #365a7b;
+  border-bottom: 1px solid #edf3f8;
+}
+
+body:not(.halaman-login) main tbody tr:last-child td {
+  border-bottom: none;
+}
+
+body:not(.halaman-login) main tbody tr:hover {
+  background: #f5fbff;
+}
+
+/* Tombol aksi tabel */
+body:not(.halaman-login) main td button {
+  margin: 2px;
+  padding: 7px 9px;
+  min-height: 28px;
+  font-size: 10px;
+}
+
+body:not(.halaman-login) main td button[data-aksi="status"] {
+  background: #e5f6ff;
+  color: #087eb8;
+  border: 1px solid #cceafa;
+}
+
+body:not(.halaman-login) main td button[data-aksi="hapus"] {
+  background: #fff0f2;
+  color: #dd5066;
+  border: 1px solid #ffdae0;
+}
+
+/* Hasil tiket */
+#hasilTiket {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #c9f0e2;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #e7fff4, #effaff);
+  color: #16846e;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.8;
+}
+
+/* Logout */
+#tombolLogout {
+  background: #fff0f2 !important;
+  color: #d94c64 !important;
+  border: 1px solid #ffd9df !important;
+}
+
+/* Responsif untuk HP */
+@media (max-width: 700px) {
+  body:not(.halaman-login) {
+    padding: 10px;
+  }
+
+  body:not(.halaman-login) > header {
+    padding: 15px;
+  }
+
+  body:not(.halaman-login) > header h1 {
+    font-size: 20px;
+  }
+
+  body:not(.halaman-login) main form {
+    padding: 15px;
+  }
+
+  body:not(.halaman-login) main table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

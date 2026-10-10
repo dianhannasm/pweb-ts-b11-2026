@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - SehatAntri</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>SehatAntri - Dashboard Admin</h1>
+    <p id="infoPengguna">Memuat pengguna...</p>
+    <button type="button" id="tombolLogout">Logout</button>
+  </header>
+
+  <hr>
+
+  <main>
+    <section>
+      <h2>Manajemen Jenis Antrean</h2>
+
+      <form id="formJenisAntrean">
+        <label for="kodeAntrean">Kode Antrean</label>
+        <input
+          type="text"
+          id="kodeAntrean"
+          maxlength="1"
+          placeholder="Contoh: A"
+          required
+        >
+
+        <label for="namaLayanan">Nama Layanan</label>
+        <input
+          type="text"
+          id="namaLayanan"
+          placeholder="Contoh: Poli Umum"
+          required
+        >
+
+        <button type="submit">Tambah Jenis Antrean</button>
+      </form>
+
+      <p id="pesanAntrean"></p>
+
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Kode</th>
+            <th>Nama Layanan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="daftarJenisAntrean"></tbody>
+      </table>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Reset Antrean</h2>
+      <p>
+        Gunakan fitur ini untuk menghapus seluruh data antrean
+        dan mengatur ulang nomor antrean.
+      </p>
+
+      <button type="button" id="tombolResetAntrean">
+        Reset Seluruh Antrean
+      </button>
+
+      <p id="pesanReset"></p>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2>Penerbitan Tiket Antrean Manual</h2>
+
+      <form id="formTiketManual">
+        <label for="pilihanLayanan">Jenis Layanan</label>
+        <select id="pilihanLayanan" required>
+          <option value="">Pilih layanan</option>
+        </select>
+
+        <label for="prioritasPasien">Prioritas Pasien</label>
+        <select id="prioritasPasien" required>
+          <option value="">Pilih prioritas</option>
+          <option value="Normal">Normal</option>
+          <option value="Lansia">Lansia</option>
+          <option value="Disabilitas">Disabilitas</option>
+          <option value="VIP">VIP</option>
+        </select>
+
+        <button type="submit">Terbitkan Tiket</button>
+      </form>
+
+      <p id="pesanTiket"></p>
+      <div id="hasilTiket"></div>
+    </section>
+  </main>
+
+  <script src="dist/auth.js" defer></script>
+  <script src="dist/admin.js" defer></script>
+</body>
+</html>

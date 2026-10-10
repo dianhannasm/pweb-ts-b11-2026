@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Antri Sehat Waras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="halaman-login">
+
+  <main class="login-container">
+
+    <!-- Bagian kiri -->
+    <section class="login-visual">
+      <div class="brand">
+        <div class="brand-icon">✚</div>
+
+        <div>
+          <h1>Antri Sehat Waras</h1>
+          <p class="brand-subtitle">Sistem Antrian Rumah Sakit</p>
+          <p class="brand-description">
+            Melayani dengan lebih mudah,<br>
+            cepat dan nyaman
+          </p>
+        </div>
+      </div>
+
+      <img
+        src="rs.png"
+        alt="Ilustrasi rumah sakit Antri Sehat Waras"
+        class="hospital-image"
+      >
+
+      <p class="copyright">
+        © 2026 Antri Sehat Waras. Rumah Sakit Sejahtera Bersama MaFaDin
+      </p>
+    </section>
+
+    <!-- Bagian kanan -->
+    <section class="login-form-section">
+      <div class="login-card">
+
+        <h2>Login</h2>
+        <p class="login-description">
+          Silakan masuk untuk melanjutkan
+        </p>
+
+        <form id="formLogin">
+
+          <div class="input-group">
+            <span class="input-icon">♙</span>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <span class="input-icon">♙</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button type="submit" id="tombolLogin">
+            <span>↪</span> Login
+          </button>
+
+          <p id="pesan" aria-live="polite"></p>
+
+        </form>
+
+        <div class="login-footer">
+          Belum punya akun?
+          <a href="#" id="linkBantuan">Hubungi admin</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dist/login.js" defer></script>
+
+</body>
+</html>
