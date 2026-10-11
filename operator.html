@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Operator - SehatAntri</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="halaman-operator">
+  <header class="operator-header">
+    <div>
+      <h1>SehatAntri - Panel Operator</h1>
+      <p id="infoPengguna">Memuat pengguna...</p>
+    </div>
+    <button type="button" id="tombolLogout">Logout</button>
+  </header>
+
+  <main class="operator-main">
+    <section class="operator-grid" aria-label="Status panggilan antrean">
+      <article class="kartu-antrian kartu-aktif">
+        <h2>Sedang Dipanggil</h2>
+        <p id="tiketAktif" class="nomor-tiket" aria-live="polite">—</p>
+        <p id="detailAktif">Belum ada tiket yang dipanggil.</p>
+        <div class="aksi-operator">
+          <button type="button" id="tombolPanggil" class="tombol-primer">Panggil Berikutnya</button>
+          <button type="button" id="tombolLewati">Lewati</button>
+          <button type="button" id="tombolSelesai">Selesai</button>
+        </div>
+      </article>
+
+      <article class="kartu-antrian kartu-berikutnya">
+        <h2>Berikutnya</h2>
+        <p id="tiketBerikutnya" class="nomor-tiket" aria-live="polite">—</p>
+        <p id="detailBerikutnya">Belum ada tiket menunggu.</p>
+      </article>
+    </section>
+
+    <section class="kartu-antrian">
+      <h2>Daftar Tunggu <span id="jumlahTunggu"></span></h2>
+      <div class="tabel-antrian-wrap">
+        <table class="tabel-antrian">
+          <thead>
+            <tr><th>Nomor</th><th>Layanan</th><th>Prioritas</th><th>Waktu</th></tr>
+          </thead>
+          <tbody id="daftarTunggu"></tbody>
+        </table>
+      </div>
+      <p id="pesanKosong" class="pesan-kosong" hidden>Tidak ada tiket yang menunggu.</p>
+    </section>
+    <p id="pesanOperator" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="dist/operator.js" defer></script>
+</body>
+</html>
