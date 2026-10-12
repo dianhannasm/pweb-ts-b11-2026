@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ambil Antrean - Antri Sehat Waras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="halaman-ambil">
+
+  <!-- Header -->
+  <header class="ambil-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <div>
+        <h1>Antri Sehat Waras</h1>
+        <p>Layanan Ambil Antrean Mandiri (Self-Service)</p>
+      </div>
+    </div>
+    <nav class="ambil-nav" aria-label="Navigasi">
+      <a href="layar.html" target="_blank" class="link-ke-layar">Buka Layar Monitor</a>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="ambil-container">
+    <section class="ambil-card" aria-labelledby="judulAmbil">
+      <div class="ambil-card-header">
+        <h2 id="judulAmbil">Ambil Tiket Antrean</h2>
+        <p class="subjudul">Pilih jenis layanan dan kategori prioritas Anda untuk mencetak tiket antrean.</p>
+      </div>
+
+      <form id="formAmbilTiket">
+        <!-- Seksi Pilih Layanan -->
+        <fieldset class="seksi-pilihan">
+          <legend class="judul-seksi">1. Pilih Jenis Layanan</legend>
+          <div id="containerPilihanLayanan" class="grid-pilihan-layanan">
+            <p class="pesan-layanan-kosong">Memuat jenis layanan...</p>
+          </div>
+        </fieldset>
+
+        <!-- Seksi Pilih Prioritas -->
+        <fieldset class="seksi-pilihan">
+          <legend class="judul-seksi">2. Pilih Tingkat Prioritas Pasien</legend>
+          <div class="grid-pilihan-prioritas">
+            <label class="item-prioritas-radio">
+              <input type="radio" name="prioritas" value="Normal" checked>
+              <div class="kartu-opsi-prioritas prioritas-card-normal">
+                <span class="nama-prioritas">Normal</span>
+                <span class="desc-prioritas">Pasien umum / reguler</span>
+              </div>
+            </label>
+
+            <label class="item-prioritas-radio">
+              <input type="radio" name="prioritas" value="Lansia">
+              <div class="kartu-opsi-prioritas prioritas-card-lansia">
+                <span class="nama-prioritas">Lansia</span>
+                <span class="desc-prioritas">Usia 60 tahun ke atas</span>
+              </div>
+            </label>
+
+            <label class="item-prioritas-radio">
+              <input type="radio" name="prioritas" value="Disabilitas">
+              <div class="kartu-opsi-prioritas prioritas-card-disabilitas">
+                <span class="nama-prioritas">Disabilitas</span>
+                <span class="desc-prioritas">Penyandang disabilitas</span>
+              </div>
+            </label>
+
+            <label class="item-prioritas-radio">
+              <input type="radio" name="prioritas" value="VIP">
+              <div class="kartu-opsi-prioritas prioritas-card-vip">
+                <span class="nama-prioritas">VIP</span>
+                <span class="desc-prioritas">Prioritas khusus / mendesak</span>
+              </div>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="seksi-tombol-ambil">
+          <button type="submit" id="tombolAmbilTiket" class="tombol-cetak-tiket">
+            ✚ Cetak Tiket Antrean
+          </button>
+        </div>
+
+        <p id="pesanForm" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <!-- Modal / Struk Tiket Result -->
+  <div id="modalStruk" class="modal-struk-overlay" hidden>
+    <div class="struk-tiket-card" role="dialog" aria-modal="true" aria-labelledby="judulStruk">
+      <div class="struk-header">
+        <span class="brand-icon" aria-hidden="true">✚</span>
+        <h3 id="judulStruk">RS ANTRI SEHAT WARAS</h3>
+        <p>TIKET ANTREAN PASIEN</p>
+      </div>
+
+      <div class="struk-garis"></div>
+
+      <div class="struk-body">
+        <p class="label-nomor">NOMOR ANTREAN</p>
+        <div id="strukNomor" class="nomor-hasil">A-001</div>
+
+        <div class="struk-detail">
+          <div class="detail-row">
+            <span>Layanan:</span>
+            <strong id="strukLayanan">—</strong>
+          </div>
+          <div class="detail-row">
+            <span>Prioritas:</span>
+            <strong id="strukPrioritas">—</strong>
+          </div>
+          <div class="detail-row">
+            <span>Antrean di depan:</span>
+            <strong><span id="strukSisa">0</span> orang</strong>
+          </div>
+          <div class="detail-row">
+            <span>Waktu Cetak:</span>
+            <span id="strukWaktu">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="struk-garis"></div>
+
+      <p class="struk-footer-info">
+        Mohon perhatikan layar monitor utama saat nomor antrean Anda dipanggil. Terima kasih atas kunjungan Anda.
+      </p>
+
+      <div class="struk-aksi">
+        <button type="button" id="tombolCetakStruk" class="btn-cetak">🖨 Cetak Tiket</button>
+        <button type="button" id="tombolTutupStruk" class="btn-tutup">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="dist/ambil-antrian.js" defer></script>
+</body>
+</html>

@@ -48,11 +48,25 @@ const formTiketManual = document.getElementById("formTiketManual");
 const prioritasPasien = document.getElementById("prioritasPasien");
 const pesanTiket = document.getElementById("pesanTiket");
 const hasilTiket = document.getElementById("hasilTiket");
+const daftarTiketManual = document.getElementById("daftarTiketManual");
 // 4. MENYIMPAN JENIS ANTREAN
 function simpanJenisAntrean() {
     localStorage.setItem("jenisAntrean", JSON.stringify(jenisAntrean));
 }
-// 5. MENAMPILKAN DAFTAR JENIS ANTREAN
+// 5. MENGAMBIL DATA TIKET
+function ambilDaftarTiket() {
+    const data = localStorage.getItem("daftarAntrean");
+    if (data === null) {
+        return [];
+    }
+    try {
+        return JSON.parse(data);
+    }
+    catch {
+        return [];
+    }
+}
+// 6. MENAMPILKAN DAFTAR JENIS ANTREAN
 function tampilkanJenisAntrean() {
     daftarJenisAntrean.innerHTML = "";
     jenisAntrean.forEach((item) => {
@@ -85,7 +99,7 @@ function tampilkanJenisAntrean() {
         daftarJenisAntrean.appendChild(baris);
     });
 }
-// 6. MENAMBAHKAN JENIS ANTREAN
+// 7. MENAMBAHKAN JENIS ANTREAN
 formJenisAntrean.addEventListener("submit", (event) => {
     event.preventDefault();
     const kode = inputKode.value.trim().toUpperCase();
@@ -119,7 +133,7 @@ formJenisAntrean.addEventListener("submit", (event) => {
         "Jenis antrean berhasil ditambahkan.";
     formJenisAntrean.reset();
 });
-// 7. AKTIF/NONAKTIF DAN HAPUS JENIS ANTREAN
+// 8. AKTIF/NONAKTIF DAN HAPUS JENIS ANTREAN
 daftarJenisAntrean.addEventListener("click", (event) => {
     const target = event.target;
     const tombol = target.closest("button");
@@ -145,30 +159,6 @@ daftarJenisAntrean.addEventListener("click", (event) => {
     tampilkanJenisAntrean();
     tampilkanPilihanLayanan();
 });
-// 8. RESET SELURUH ANTREAN
-tombolResetAntrean.addEventListener("click", () => {
-    const yakin = confirm("Yakin ingin menghapus seluruh tiket dan mereset nomor antrean?");
-    if (!yakin) {
-        return;
-    }
-    // Hapus semua tiket yang tersimpan.
-    localStorage.removeItem("daftarAntrean");
-    // Reset penghitung untuk semua kode layanan,
-    // termasuk kode layanan yang mungkin sudah dihapus.
-    const daftarKunci = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        const kunci = localStorage.key(i);
-        if (kunci !== null &&
-            kunci.startsWith("nomorAntrean_")) {
-            daftarKunci.push(kunci);
-        }
-    }
-    daftarKunci.forEach((kunci) => {
-        localStorage.removeItem(kunci);
-    });
-    pesanReset.textContent =
-        "Seluruh tiket berhasil dihapus dan nomor antrean direset.";
-});
 // 9. MENAMPILKAN PILIHAN LAYANAN
 function tampilkanPilihanLayanan() {
     pilihanLayanan.innerHTML =
@@ -182,7 +172,60 @@ function tampilkanPilihanLayanan() {
         }
     });
 }
-// 10. MENGHITUNG NOMOR ANTREAN
+// 10. MENAMPILKAN DAFTAR TIKET
+function tampilkanDaftarTiket() {
+    daftarTiketManual.innerHTML = "";
+    const daftarTiket = ambilDaftarTiket();
+    if (daftarTiket.length === 0) {
+        const pesan = document.createElement("p");
+        pesan.textContent = "Belum ada tiket antrean.";
+        daftarTiketManual.appendChild(pesan);
+        return;
+    }
+    daftarTiket.forEach((tiket) => {
+        const kartu = document.createElement("div");
+        kartu.className = "kartu-tiket";
+        const nomor = document.createElement("strong");
+        nomor.textContent = tiket.nomor;
+        const layanan = document.createElement("span");
+        layanan.textContent = tiket.namaLayanan;
+        const prioritas = document.createElement("span");
+        prioritas.textContent = tiket.prioritas;
+        const waktu = document.createElement("small");
+        waktu.textContent = tiket.waktu;
+        const status = document.createElement("span");
+        status.className = "status-tiket";
+        status.textContent = tiket.status || "Menunggu";
+        kartu.appendChild(nomor);
+        kartu.appendChild(layanan);
+        kartu.appendChild(prioritas);
+        kartu.appendChild(waktu);
+        kartu.appendChild(status);
+        daftarTiketManual.appendChild(kartu);
+    });
+}
+// 11. RESET SELURUH ANTREAN
+tombolResetAntrean.addEventListener("click", () => {
+    const yakin = confirm("Yakin ingin menghapus seluruh tiket dan mereset nomor antrean?");
+    if (!yakin) {
+        return;
+    }
+    localStorage.removeItem("daftarAntrean");
+    const daftarKunci = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const kunci = localStorage.key(i);
+        if (kunci !== null && kunci.startsWith("nomorAntrean_")) {
+            daftarKunci.push(kunci);
+        }
+    }
+    daftarKunci.forEach((kunci) => {
+        localStorage.removeItem(kunci);
+    });
+    tampilkanDaftarTiket();
+    pesanReset.textContent =
+        "Seluruh tiket berhasil dihapus dan nomor antrean direset.";
+});
+// 12. MENGHITUNG NOMOR ANTREAN
 function ambilNomorBerikutnya(kode) {
     const kunci = "nomorAntrean_" + kode;
     const nomorLama = Number(localStorage.getItem(kunci) || "0");
@@ -190,7 +233,7 @@ function ambilNomorBerikutnya(kode) {
     localStorage.setItem(kunci, String(nomorBaru));
     return nomorBaru;
 }
-// 11. MENERBITKAN TIKET ANTREAN MANUAL
+// 13. MENERBITKAN TIKET ANTREAN MANUAL
 formTiketManual.addEventListener("submit", (event) => {
     event.preventDefault();
     const kode = pilihanLayanan.value;
@@ -213,28 +256,21 @@ formTiketManual.addEventListener("submit", (event) => {
         kode: kode,
         namaLayanan: layanan.nama,
         prioritas: prioritas,
-        waktu: new Date().toLocaleString("id-ID")
+        waktu: new Date().toLocaleString("id-ID"),
+        status: "Menunggu"
     };
-    const dataLama = localStorage.getItem("daftarAntrean");
-    let daftarTiket = [];
-    if (dataLama !== null) {
-        try {
-            daftarTiket = JSON.parse(dataLama);
-        }
-        catch {
-            daftarTiket = [];
-        }
-    }
+    const daftarTiket = ambilDaftarTiket();
     daftarTiket.push(tiket);
     localStorage.setItem("daftarAntrean", JSON.stringify(daftarTiket));
-    pesanTiket.textContent =
-        "Tiket berhasil diterbitkan!";
+    pesanTiket.textContent = "Tiket berhasil diterbitkan!";
     hasilTiket.textContent =
         "Nomor: " + tiket.nomor +
             " | Layanan: " + tiket.namaLayanan +
             " | Prioritas: " + tiket.prioritas;
+    tampilkanDaftarTiket();
     formTiketManual.reset();
 });
-// 12. MENAMPILKAN DATA SAAT HALAMAN DIBUKA
+// 14. MENAMPILKAN DATA SAAT HALAMAN DIBUKA
 tampilkanJenisAntrean();
 tampilkanPilihanLayanan();
+tampilkanDaftarTiket();

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layar Monitor Antrean - Antri Sehat Waras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="halaman-layar">
+
+  <!-- Header Layar -->
+  <header class="layar-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <div class="brand-title">
+        <h1>Antri Sehat Waras</h1>
+        <p>Layar Monitor Utama Antrean Pasien</p>
+      </div>
+    </div>
+
+    <div class="layar-aksi">
+      <span class="live-indicator" aria-label="Status koneksi real-time">
+        <span class="live-dot" aria-hidden="true"></span>
+        LIVE
+      </span>
+      <button type="button" id="tombolFullscreen" class="tombol-fullscreen">
+        ⛶ Layar Penuh
+      </button>
+    </div>
+  </header>
+
+  <!-- Konten Utama Layar Monitor -->
+  <main class="layar-container">
+
+    <!-- Card Nomor Sedang Dipanggil (Hero) -->
+    <section class="hero-panggilan" aria-label="Nomor antrean sedang dipanggil">
+      <p class="hero-subjudul">NOMOR ANTREAN SEDANG DIPANGGIL</p>
+      <h2 id="nomorUtama" class="hero-nomor" aria-live="polite">—</h2>
+      <p id="layananUtama" class="hero-layanan">Belum ada antrean yang dipanggil</p>
+      <div id="metaUtama" class="hero-meta" hidden>
+        <span id="prioritasUtama" class="badge-prioritas">Normal</span>
+        <span id="waktuUtama" class="badge-waktu"></span>
+      </div>
+    </section>
+
+    <!-- Panel Layar Per Jenis Antrean -->
+    <section class="seksi-panel-layar" aria-label="Status per jenis layanan">
+      <h2 class="layar-grid-judul">Status Antrean Tiap Layanan</h2>
+      <div id="panelLayanan" class="grid-layar-panel">
+        <p class="pesan-layanan-kosong">Memuat daftar layanan...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dist/layar.js" defer></script>
+</body>
+</html>
