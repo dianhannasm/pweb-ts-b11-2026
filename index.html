@@ -3,103 +3,262 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin - SehatAntri</title>
+
+  <meta
+    name="description"
+    content="Dashboard admin SehatAntri untuk mengelola jenis antrean dan menerbitkan tiket antrean rumah sakit."
+  >
+
+  <title>Dashboard Admin -  Antri Sehat Waras</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <header>
-    <h1>SehatAntri - Dashboard Admin</h1>
-    <p id="infoPengguna">Memuat pengguna...</p>
-    <p><a href="operator.html">Buka Panel Operator</a></p>
-    <button type="button" id="tombolLogout">Logout</button>
+  <!-- Header dan navigasi -->
+  <header class="navbar">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <span class="brand-name">Antri Sehat Waras</span>
+    </div>
+
+    <nav aria-label="Navigasi utama">
+      <a href="index.html" aria-current="page">
+        Dashboard Admin
+      </a>
+      <a href="operator.html">
+        Buka Panel Operator
+      </a>
+    </nav>
+
+    <div class="user-menu">
+      <p id="infoPengguna">Memuat pengguna...</p>
+      <button type="button" id="tombolLogout">
+        Logout
+      </button>
+    </div>
   </header>
 
-  <hr>
-
+  <!-- Konten utama dashboard -->
   <main>
-    <section>
-      <h2>Manajemen Jenis Antrean</h2>
-
-      <form id="formJenisAntrean">
-        <label for="kodeAntrean">Kode Antrean</label>
-        <input
-          type="text"
-          id="kodeAntrean"
-          maxlength="1"
-          placeholder="Contoh: A"
-          required
-        >
-
-        <label for="namaLayanan">Nama Layanan</label>
-        <input
-          type="text"
-          id="namaLayanan"
-          placeholder="Contoh: Poli Umum"
-          required
-        >
-
-        <button type="submit">Tambah Jenis Antrean</button>
-      </form>
-
-      <p id="pesanAntrean"></p>
-
-      <table border="1">
-        <thead>
-          <tr>
-            <th>Kode</th>
-            <th>Nama Layanan</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="daftarJenisAntrean"></tbody>
-      </table>
+    <section class="dashboard-heading" aria-labelledby="judulDashboard">
+      <div>
+        <p class="eyebrow"> ANTRI SEHAT WARAS ADMINISTRATION</p>
+        <h1 id="judulDashboard">Dashboard Admin</h1>
+        <p>
+          Kelola jenis antrean dan penerbitan tiket antrean rumah sakit.
+        </p>
+      </div>
     </section>
 
-    <hr>
+    <!-- Ringkasan dashboard -->
+    <section class="ringkasan" aria-label="Ringkasan dashboard">
+      <article class="kartu-ringkasan">
+        <span class="ikon-ringkasan" aria-hidden="true">▤</span>
+        <div>
+          <h2>Total Jenis Antrean</h2>
+          <p>Layanan terdaftar</p>
+        </div>
+        <span class="nilai-ringkasan" id="totalJenisAntrean">-</span>
+      </article>
 
-    <section>
-      <h2>Reset Antrean</h2>
-      <p>
-        Gunakan fitur ini untuk menghapus seluruh data antrean
-        dan mengatur ulang nomor antrean.
-      </p>
+      <article class="kartu-ringkasan">
+        <span class="ikon-ringkasan" aria-hidden="true">▣</span>
+        <div>
+          <h2>Total Tiket</h2>
+          <p>Tiket tersimpan</p>
+        </div>
+        <span class="nilai-ringkasan" id="totalTiket">-</span>
+      </article>
 
-      <button type="button" id="tombolResetAntrean">
-        Reset Seluruh Antrean
-      </button>
+      <article class="kartu-ringkasan">
+        <span class="ikon-ringkasan" aria-hidden="true">◷</span>
+        <div>
+          <h2>Antrean Aktif</h2>
+          <p>Layanan aktif</p>
+        </div>
+        <span class="nilai-ringkasan" id="totalAntreanAktif">-</span>
+      </article>
 
-      <p id="pesanReset"></p>
+      <article class="kartu-ringkasan">
+        <span class="ikon-ringkasan" aria-hidden="true">▣</span>
+        <div>
+          <h2>Tiket Manual</h2>
+          <p>Tiket dari admin</p>
+        </div>
+        <span class="nilai-ringkasan" id="totalTiketManual">-</span>
+      </article>
     </section>
 
-    <hr>
+    <!-- Dua panel utama -->
+    <div class="dashboard-grid">
 
-    <section>
-      <h2>Penerbitan Tiket Antrean Manual</h2>
+      <!-- Panel kiri: Manajemen jenis antrean -->
+      <section
+        class="panel panel-jenis"
+        aria-labelledby="judulJenisAntrean"
+      >
+        <div class="judul-panel">
+          <span class="ikon-panel" aria-hidden="true">♟</span>
+          <div>
+            <h2 id="judulJenisAntrean">
+              Manajemen Jenis Antrean
+            </h2>
+            <p>Kelola layanan rumah sakit.</p>
+          </div>
+        </div>
 
-      <form id="formTiketManual">
-        <label for="pilihanLayanan">Jenis Layanan</label>
-        <select id="pilihanLayanan" required>
-          <option value="">Pilih layanan</option>
-        </select>
+        <form id="formJenisAntrean">
+          <div class="form-group">
+            <label for="kodeAntrean">Kode Antrean</label>
+            <input
+              type="text"
+              id="kodeAntrean"
+              maxlength="1"
+              placeholder="Contoh: A"
+              autocomplete="off"
+              required
+            >
+          </div>
 
-        <label for="prioritasPasien">Prioritas Pasien</label>
-        <select id="prioritasPasien" required>
-          <option value="">Pilih prioritas</option>
-          <option value="Normal">Normal</option>
-          <option value="Lansia">Lansia</option>
-          <option value="Disabilitas">Disabilitas</option>
-          <option value="VIP">VIP</option>
-        </select>
+          <div class="form-group">
+            <label for="namaLayanan">Nama Layanan</label>
+            <input
+              type="text"
+              id="namaLayanan"
+              placeholder="Contoh: Poli Umum"
+              autocomplete="off"
+              required
+            >
+          </div>
 
-        <button type="submit">Terbitkan Tiket</button>
-      </form>
+          <button type="submit" class="tombol-utama">
+            + Tambah Jenis Antrean
+          </button>
+        </form>
 
-      <p id="pesanTiket"></p>
-      <div id="hasilTiket"></div>
+        <p id="pesanAntrean" role="status" aria-live="polite"></p>
+
+        <div class="tabel-scroll">
+          <table>
+            <caption>Daftar jenis layanan antrean</caption>
+            <thead>
+              <tr>
+                <th scope="col">Kode</th>
+                <th scope="col">Nama Layanan</th>
+                <th scope="col">Status</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="daftarJenisAntrean"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel kanan: Penerbitan tiket -->
+      <section
+        class="panel panel-tiket"
+        aria-labelledby="judulPenerbitanTiket"
+      >
+        <div class="judul-panel">
+          <span class="ikon-panel" aria-hidden="true">▣</span>
+          <div>
+            <h2 id="judulPenerbitanTiket">
+              Penerbitan Tiket Antrean Manual
+            </h2>
+            <p>Buat tiket sesuai layanan dan prioritas pasien.</p>
+          </div>
+        </div>
+
+        <form id="formTiketManual">
+          <div class="form-group">
+            <label for="pilihanLayanan">Jenis Layanan</label>
+            <select id="pilihanLayanan" required>
+              <option value="">Pilih layanan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="prioritasPasien">Prioritas Pasien</label>
+            <select id="prioritasPasien" required>
+              <option value="">Pilih prioritas</option>
+              <option value="Normal">Normal</option>
+              <option value="Lansia">Lansia</option>
+              <option value="Disabilitas">Disabilitas</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+
+          <button type="submit" class="tombol-utama tombol-terbitkan">
+            Terbitkan Tiket
+          </button>
+        </form>
+
+        <p id="pesanTiket" role="status" aria-live="polite"></p>
+
+        <div
+          id="hasilTiket"
+          class="hasil-tiket"
+          aria-live="polite"
+        ></div>
+
+        <section
+          id="bagianDaftarTiket"
+          aria-labelledby="judulDaftarTiket"
+        >
+          <div class="subjudul-panel">
+            <h3 id="judulDaftarTiket">Daftar Tiket Antrean</h3>
+          </div>
+
+          <div id="daftarTiketManual">
+            <p>Belum ada tiket antrean.</p>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <!-- Panel reset di bawah kedua kolom -->
+    <section
+      class="panel panel-reset"
+      aria-labelledby="judulResetAntrean"
+    >
+      <div class="reset-info">
+        <span class="ikon-reset" aria-hidden="true">↻</span>
+        <div>
+          <h2 id="judulResetAntrean">Reset Antrean</h2>
+          <p>
+            Gunakan fitur ini untuk menghapus seluruh data antrean
+            dan mengatur ulang nomor antrean.
+          </p>
+        </div>
+      </div>
+
+      <div class="reset-action">
+        <button type="button" id="tombolResetAntrean">
+          Reset Seluruh Antrean
+        </button>
+        <p id="pesanReset" role="status" aria-live="polite"></p>
+      </div>
     </section>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <strong> Antri Sehat Waras</strong>
+    </div>
+
+    <p>
+      Sistem Informasi Antrean Rumah Sakit
+    </p>
+
+    <p class="footer-copyright">
+      &copy; 2026  Antri Sehat Waras. Melayani dengan tertib,
+      nyaman, dan efisien.
+    </p>
+  </footer>
+
+  <!-- JavaScript hasil kompilasi TypeScript -->
   <script src="dist/auth.js" defer></script>
   <script src="dist/admin.js" defer></script>
 </body>
