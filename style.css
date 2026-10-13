@@ -1,6 +1,4 @@
-/* ========================================
-   1. LOGIN
-======================================== */
+/* 1. LOGIN */
 
 * {
   box-sizing: border-box;
@@ -349,38 +347,35 @@ body.halaman-login {
   }
 }
 
-
-/* ========================================
-   2. DASHBOARD ADMIN
-   Tema biru muda dan hijau mint
-======================================== */
+/* 2. DASHBOARD ADMIN */
 
 /* Latar halaman admin */
-
 body:not(.halaman-login):not(.halaman-operator) {
   min-height: 100vh;
   margin: 0;
-  padding: 20px;
+  padding: 20px 28px;
   color: #193d63;
   font-family: "Segoe UI", Arial, sans-serif;
   background:
     radial-gradient(ellipse at 5% 0%, #d6f5ff, transparent 40%),
     linear-gradient(135deg, #e9faff, #e9fff7);
+  box-sizing: border-box;
 }
 
 /* Header dashboard */
-
 body:not(.halaman-login):not(.halaman-operator) > header.navbar,
 body:not(.halaman-login):not(.halaman-operator) > header:not(.operator-header) {
-  max-width: 1500px;
-  min-height: 65px;
-  margin: 0 auto 24px;
-  padding: 16px 22px;
+  width: 100%;
+  max-width: 1400px;
+  min-height: 55px;
+  margin: 5px auto 24px;
+  padding: 14px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 14px;
+  box-sizing: border-box;
   border: 1px solid #dceef7;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.96);
@@ -390,15 +385,15 @@ body:not(.halaman-login):not(.halaman-operator) > header:not(.operator-header) {
 body:not(.halaman-login):not(.halaman-operator) > header h1 {
   margin: 0;
   color: #168cc1;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 body:not(.halaman-login):not(.halaman-operator) > header p {
+  margin: 4px 0 0;
   font-size: 12px;
 }
 
 /* Navigasi header admin */
-
 body:not(.halaman-login):not(.halaman-operator) .navbar nav {
   display: flex;
   align-items: center;
@@ -408,7 +403,7 @@ body:not(.halaman-login):not(.halaman-operator) .navbar nav {
 
 body:not(.halaman-login):not(.halaman-operator) .navbar nav a {
   color: #168cc1;
-  font-size: 12px;
+  font-size: 13px;
   text-decoration: none;
 }
 
@@ -416,89 +411,91 @@ body:not(.halaman-login):not(.halaman-operator) .navbar nav a:hover {
   color: #086b9e;
 }
 
-/* Konten dashboard */
-
+/* Konten utama dashboard */
 body:not(.halaman-login):not(.halaman-operator) > main {
-  max-width: 1500px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
+/* Judul dashboard */
 .dashboard-heading {
-  margin: 24px 0 20px;
+  margin: 20px 0 18px;
 }
 
 .dashboard-heading .eyebrow {
   color: #20a6bb;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1.5px;
 }
 
 .dashboard-heading h1 {
-  margin: 5px 0;
+  margin: 6px 0;
   color: #174b7a;
-  font-size: 27px;
+  font-size: 32px;
 }
 
 .dashboard-heading p {
+  margin: 6px 0;
   color: #63809a;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* Kartu ringkasan */
-
 .ringkasan {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 22px;
 }
 
 .kartu-ringkasan {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
+  min-height: 85px;
   padding: 16px;
+  box-sizing: border-box;
   border: 1px solid #dceef7;
-  border-radius: 13px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgba(49, 124, 164, 0.05);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 14px rgba(49, 124, 164, 0.05);
 }
 
 .ikon-ringkasan {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   flex-shrink: 0;
-  border-radius: 11px;
-  background: #e2f6ff;
+  border-radius: 50%;
+  background: #dff5ff;
   color: #168cc1;
-  font-size: 20px;
+  font-size: 23px;
 }
 
 .kartu-ringkasan h2 {
   margin: 0 0 5px;
   color: #315979;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .kartu-ringkasan p {
   margin: 0;
   color: #8198ae;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .nilai-ringkasan {
   margin-left: auto;
   color: #087eb8;
-  font-size: 21px;
+  font-size: 25px;
   font-weight: 700;
 }
 
-/* Dua panel utama berdampingan */
-
+/* Dua panel utama */
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -509,15 +506,15 @@ body:not(.halaman-login):not(.halaman-operator) > main {
 .dashboard-grid > .panel {
   min-width: 0;
   margin: 0;
-  padding: 20px;
+  padding: 22px;
+  box-sizing: border-box;
   border: 1px solid #dceef7;
   border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgba(49, 124, 164, 0.06);
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
 }
 
 /* Judul panel */
-
 .judul-panel {
   display: flex;
   align-items: center;
@@ -528,57 +525,59 @@ body:not(.halaman-login):not(.halaman-operator) > main {
 .ikon-panel {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
-  border-radius: 11px;
+  border-radius: 10px;
   background: #e2f6ff;
   color: #168cc1;
-  font-size: 19px;
+  font-size: 22px;
 }
 
 .judul-panel h2 {
   margin: 0 0 5px;
   color: #174b7a;
-  font-size: 17px;
+  font-size: 19px;
 }
 
 .judul-panel p {
   margin: 0;
   color: #8198ae;
-  font-size: 11px;
+  font-size: 12px;
 }
 
-/* Form admin */
-
+/* Form dashboard */
 .dashboard-grid .panel form {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  gap: 8px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #dceef7;
+  border-radius: 10px;
+  background: #fbfdff;
   box-shadow: none;
 }
 
 .dashboard-grid .panel label {
   display: block;
-  margin: 7px 0 4px;
+  margin: 5px 0;
   color: #315979;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 
 .dashboard-grid .panel input,
 .dashboard-grid .panel select {
   width: 100%;
-  min-height: 40px;
+  min-width: 0;
+  min-height: 42px;
   margin: 0 0 8px;
-  padding: 9px 12px;
+  padding: 10px 12px;
+  box-sizing: border-box;
   border: 1px solid #d2e6f2;
-  border-radius: 8px;
-  background: #fbfdff;
+  border-radius: 7px;
+  background: #fff;
   color: #214d72;
   font-family: inherit;
   font-size: 13px;
@@ -591,17 +590,37 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   box-shadow: 0 0 0 3px rgba(34, 175, 208, 0.1);
 }
 
-/* Tombol admin */
+/* Form tambah jenis antrean */
+.dashboard-grid > .panel:first-child form {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.7fr) minmax(140px, 1.2fr) auto;
+  align-items: end;
+  gap: 12px;
+}
 
+.dashboard-grid > .panel:first-child form label {
+  min-width: 0;
+}
+
+.dashboard-grid > .panel:first-child form input {
+  margin-bottom: 0;
+}
+
+.dashboard-grid > .panel:first-child form button {
+  align-self: end;
+  margin: 0 0 8px;
+}
+
+/* Tombol dashboard */
 body:not(.halaman-login):not(.halaman-operator) main button {
-  min-height: 34px;
-  padding: 8px 12px;
+  min-height: 40px;
+  padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   background: linear-gradient(110deg, #20b8d0, #168fd0);
   color: #fff;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 650;
   cursor: pointer;
   transition: 0.2s ease;
@@ -609,19 +628,22 @@ body:not(.halaman-login):not(.halaman-operator) main button {
 
 body:not(.halaman-login):not(.halaman-operator) main button:hover {
   filter: brightness(1.04);
-  box-shadow: 0 4px 12px rgba(22, 143, 208, 0.18);
+  box-shadow: 0 3px 10px rgba(22, 143, 208, 0.16);
 }
 
 .dashboard-grid .panel form button {
-  align-self: flex-start;
-  margin-top: 3px;
+  margin-top: 5px;
+}
+
+/* Tombol terbitkan tiket */
+.dashboard-grid > .panel:nth-child(2) form button {
+  width: 100%;
 }
 
 /* Tabel jenis antrean */
-
 .dashboard-grid .tabel-scroll {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 14px;
   overflow-x: auto;
 }
 
@@ -631,43 +653,50 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   border: 1px solid #dcecf6;
   border-collapse: separate;
   border-spacing: 0;
-  border-radius: 10px;
+  border-radius: 9px;
   background: #fff;
   font-size: 12px;
 }
 
 .dashboard-grid .panel table caption {
-  padding: 8px;
+  padding: 10px;
   color: #63809a;
   text-align: left;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .dashboard-grid .panel th {
-  padding: 11px 9px;
-  background: #edf8ff;
+  padding: 12px 10px;
+  background: #eaf7fd;
   color: #28577e;
   text-align: left;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .dashboard-grid .panel td {
-  padding: 10px 9px;
+  padding: 12px 10px;
   color: #365a7b;
   border-top: 1px solid #edf3f8;
+  vertical-align: middle;
+}
+
+.dashboard-grid .panel tbody tr:nth-child(even) {
+  background: #f7fcff;
 }
 
 .dashboard-grid .panel tbody tr:hover {
-  background: #f5fbff;
+  background: #edf9ff;
 }
 
 /* Tombol aksi tabel */
-
 .dashboard-grid .panel td button {
   margin: 2px;
-  padding: 6px 8px;
-  min-height: 27px;
-  font-size: 10px;
+  padding: 7px 10px;
+  min-height: 30px;
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 .dashboard-grid .panel td button[data-aksi="status"] {
@@ -682,68 +711,164 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   border: 1px solid #ffdae0;
 }
 
-/* Pesan hasil form */
+/* Status antrean */
+.status,
+.status-antrean {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #dcf9eb;
+  color: #15966d;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
 
+.prioritas,
+.status-menunggu {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #e1f5ff;
+  color: #168cc1;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Pesan hasil form */
 #pesanAntrean,
 #pesanReset,
 #pesanTiket {
   min-height: 18px;
-  margin: 10px 0;
+  margin: 8px 0;
   color: #138c75;
   font-size: 12px;
   font-weight: 600;
 }
 
 /* Tiket berhasil diterbitkan */
-
 #hasilTiket:not(:empty) {
   margin-top: 12px;
-  padding: 12px;
+  padding: 14px;
   border: 1px solid #c9f0e2;
   border-radius: 10px;
   background: linear-gradient(120deg, #e7fff4, #effaff);
   color: #16846e;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
 }
 
-/* Daftar tiket */
-
+/* Daftar tiket antrean */
 #bagianDaftarTiket {
+  width: 100%;
+  min-width: 0;
   margin-top: 22px;
 }
 
 .subjudul-panel h3 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: #174b7a;
-  font-size: 15px;
+  font-size: 16px;
 }
 
+/* Pembungkus tabel tiket */
 #daftarTiketManual {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid #dceef7;
+  border-radius: 10px;
+  background: #fff;
 }
 
-#daftarTiketManual > p {
-  color: #8198ae;
+/* Tabel tiket */
+#daftarTiketManual table {
+  width: 100%;
+  min-width: 560px;
+  margin: 0;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: #fff;
   font-size: 12px;
 }
 
-/* Reset antrean */
+/* Kepala tabel tiket */
+#daftarTiketManual thead th {
+  padding: 14px 16px;
+  background: #edf8ff;
+  color: #28577e;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  border-bottom: 1px solid #dceef7;
+}
 
+/* Isi tabel tiket */
+#daftarTiketManual tbody td {
+  padding: 16px;
+  color: #365a7b;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 1.6;
+  border-bottom: 1px solid #e5eef5;
+}
+
+#daftarTiketManual tbody tr:last-child td {
+  border-bottom: none;
+}
+
+#daftarTiketManual tbody tr:nth-child(even) {
+  background: #f7fcff;
+}
+
+#daftarTiketManual tbody tr:hover {
+  background: #edf9ff;
+}
+
+/* Nomor tiket */
+#daftarTiketManual tbody td:first-child {
+  color: #087eb8;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Status dan prioritas di daftar tiket */
+#daftarTiketManual .status,
+#daftarTiketManual .status-antrean,
+#daftarTiketManual .prioritas {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* Pesan saat daftar tiket kosong */
+#daftarTiketManual > p {
+  margin: 0;
+  padding: 20px;
+  color: #8198ae;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Reset antrean */
 .panel-reset {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
   margin-top: 20px;
-  padding: 20px;
+  padding: 18px;
   border: 1px solid #dceef7;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 5px 18px rgba(49, 124, 164, 0.05);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
 }
 
 .reset-info {
@@ -755,13 +880,13 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 .ikon-reset {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
-  border-radius: 12px;
-  background: #fff0f2;
-  color: #ed526b;
-  font-size: 22px;
+  border-radius: 50%;
+  background: #e1f5ff;
+  color: #168cc1;
+  font-size: 24px;
 }
 
 .reset-info h2 {
@@ -777,14 +902,15 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 }
 
 .reset-action #tombolResetAntrean {
+  min-height: 40px;
+  padding: 10px 16px;
   background: linear-gradient(110deg, #ff8293, #ed526b);
 }
 
 /* Footer admin */
-
 .footer {
-  margin: 30px -20px -20px;
-  padding: 22px 20px;
+  margin: 28px -28px -20px;
+  padding: 18px 20px;
   border-top: 1px solid #d2eaf5;
   background: rgba(255, 255, 255, 0.78);
   text-align: center;
@@ -802,13 +928,13 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 }
 
 .footer-brand .brand-icon {
-  width: 24px;
-  height: 24px;
-  font-size: 22px;
+  width: 28px;
+  height: 28px;
+  font-size: 24px;
 }
 
 .footer p {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
 }
 
 .footer-copyright {
@@ -816,28 +942,40 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 }
 
 /* Responsif dashboard admin */
-
 @media (max-width: 900px) {
-  .ringkasan {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .dashboard-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .ringkasan {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   body:not(.halaman-login):not(.halaman-operator) {
     padding: 12px;
   }
 
+  body:not(.halaman-login):not(.halaman-operator) > header.navbar,
+  body:not(.halaman-login):not(.halaman-operator) > header:not(.operator-header) {
+    padding: 12px;
+  }
+
   .ringkasan {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid > .panel:first-child form {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .panel-reset {
-    align-items: flex-start;
+  .dashboard-grid .panel td {
+    padding: 9px 7px;
+  }
+
+  #daftarTiketManual table {
+    min-width: 560px;
   }
 
   .footer {
@@ -847,11 +985,21 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   }
 }
 
+@media (max-width: 420px) {
+  .ringkasan {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-/* ========================================
-   3. OPERATOR
-   Bagian ini dipertahankan dari CSS awal
-======================================== */
+  .kartu-ringkasan {
+    min-height: 65px;
+  }
+
+  .panel-reset {
+    align-items: flex-start;
+  }
+}
+
+/* 3. OPERATOR */
 
 body.halaman-operator {
   min-height: 100vh;

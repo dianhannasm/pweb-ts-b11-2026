@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -9,7 +10,7 @@
     content="Dashboard admin SehatAntri untuk mengelola jenis antrean dan menerbitkan tiket antrean rumah sakit."
   >
 
-  <title>Dashboard Admin -  Antri Sehat Waras</title>
+  <title>Dashboard Admin - Antri Sehat Waras</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -42,7 +43,7 @@
   <main>
     <section class="dashboard-heading" aria-labelledby="judulDashboard">
       <div>
-        <p class="eyebrow"> ANTRI SEHAT WARAS ADMINISTRATION</p>
+        <p class="eyebrow">ANTRI SEHAT WARAS ADMINISTRATION</p>
         <h1 id="judulDashboard">Dashboard Admin</h1>
         <p>
           Kelola jenis antrean dan penerbitan tiket antrean rumah sakit.
@@ -52,6 +53,7 @@
 
     <!-- Ringkasan dashboard -->
     <section class="ringkasan" aria-label="Ringkasan dashboard">
+
       <article class="kartu-ringkasan">
         <span class="ikon-ringkasan" aria-hidden="true">▤</span>
         <div>
@@ -87,6 +89,7 @@
         </div>
         <span class="nilai-ringkasan" id="totalTiketManual">-</span>
       </article>
+
     </section>
 
     <!-- Dua panel utama -->
@@ -107,6 +110,7 @@
           </div>
         </div>
 
+        <!-- Form tambah jenis antrean -->
         <form id="formJenisAntrean">
           <div class="form-group">
             <label for="kodeAntrean">Kode Antrean</label>
@@ -138,6 +142,7 @@
 
         <p id="pesanAntrean" role="status" aria-live="polite"></p>
 
+        <!-- Tabel jenis antrean -->
         <div class="tabel-scroll">
           <table>
             <caption>Daftar jenis layanan antrean</caption>
@@ -169,6 +174,7 @@
           </div>
         </div>
 
+        <!-- Form penerbitan tiket -->
         <form id="formTiketManual">
           <div class="form-group">
             <label for="pilihanLayanan">Jenis Layanan</label>
@@ -188,35 +194,56 @@
             </select>
           </div>
 
-          <button type="submit" class="tombol-utama tombol-terbitkan">
+          <button
+            type="submit"
+            class="tombol-utama tombol-terbitkan"
+          >
             Terbitkan Tiket
           </button>
         </form>
 
         <p id="pesanTiket" role="status" aria-live="polite"></p>
 
+        <!-- Informasi tiket yang baru diterbitkan -->
         <div
           id="hasilTiket"
           class="hasil-tiket"
           aria-live="polite"
         ></div>
 
+        <!-- Daftar tiket dalam bentuk tabel -->
         <section
           id="bagianDaftarTiket"
           aria-labelledby="judulDaftarTiket"
         >
           <div class="subjudul-panel">
-            <h3 id="judulDaftarTiket">Daftar Tiket Antrean</h3>
+            <h3 id="judulDaftarTiket">▤ Daftar Tiket Antrean</h3>
           </div>
 
-          <div id="daftarTiketManual">
-            <p>Belum ada tiket antrean.</p>
+          <div class="tabel-scroll">
+            <table class="tabel-tiket">
+              <thead>
+                <tr>
+                  <th scope="col">No. Tiket</th>
+                  <th scope="col">Layanan</th>
+                  <th scope="col">Prioritas</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Waktu</th>
+                </tr>
+              </thead>
+
+              <tbody id="daftarTiketManual">
+                <tr>
+                  <td colspan="5">Belum ada tiket antrean.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
       </section>
     </div>
 
-    <!-- Panel reset di bawah kedua kolom -->
+    <!-- Panel reset antrean -->
     <section
       class="panel panel-reset"
       aria-labelledby="judulResetAntrean"
@@ -245,20 +272,18 @@
   <footer class="footer">
     <div class="footer-brand">
       <span class="brand-icon" aria-hidden="true">✚</span>
-      <strong> Antri Sehat Waras</strong>
+      <strong>Antri Sehat Waras</strong>
     </div>
 
-    <p>
-      Sistem Informasi Antrean Rumah Sakit
-    </p>
+    <p>Sistem Informasi Antrean Rumah Sakit</p>
 
     <p class="footer-copyright">
-      &copy; 2026  Antri Sehat Waras. Melayani dengan tertib,
+      &copy; 2026 Antri Sehat Waras. Melayani dengan tertib,
       nyaman, dan efisien.
     </p>
   </footer>
 
-  <!-- JavaScript hasil kompilasi TypeScript -->
+  <!-- JavaScript -->
   <script src="dist/auth.js" defer></script>
   <script src="dist/admin.js" defer></script>
 </body>

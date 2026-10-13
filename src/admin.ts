@@ -295,13 +295,15 @@ function tampilkanPilihanLayanan(): void {
   });
 }
 
-// 10. MENAMPILKAN DAFTAR TIKET
+
+ // 10. MENAMPILKAN DAFTAR TIKET DALAM BENTUK TABEL
 
 function tampilkanDaftarTiket(): void {
   daftarTiketManual.innerHTML = "";
 
   const daftarTiket = ambilDaftarTiket();
 
+  // Jika belum ada tiket
   if (daftarTiket.length === 0) {
     const pesan = document.createElement("p");
     pesan.textContent = "Belum ada tiket antrean.";
@@ -309,34 +311,64 @@ function tampilkanDaftarTiket(): void {
     return;
   }
 
-  daftarTiket.forEach((tiket) => {
-    const kartu = document.createElement("div");
-    kartu.className = "kartu-tiket";
+  // Membuat tabel
+  const tabel = document.createElement("table");
 
-    const nomor = document.createElement("strong");
-    nomor.textContent = tiket.nomor;
+  // Membuat kepala tabel
+  const kepala = document.createElement("thead");
+  const barisKepala = document.createElement("tr");
 
-    const layanan = document.createElement("span");
-    layanan.textContent = tiket.namaLayanan;
+  const judulKolom = [
+    "Nomor",
+    "Layanan",
+    "Prioritas",
+    "Tanggal",
+    "Status"
+  ];
 
-    const prioritas = document.createElement("span");
-    prioritas.textContent = tiket.prioritas;
-
-    const waktu = document.createElement("small");
-    waktu.textContent = tiket.waktu;
-
-    const status = document.createElement("span");
-    status.className = "status-tiket";
-    status.textContent = tiket.status || "Menunggu";
-
-    kartu.appendChild(nomor);
-    kartu.appendChild(layanan);
-    kartu.appendChild(prioritas);
-    kartu.appendChild(waktu);
-    kartu.appendChild(status);
-
-    daftarTiketManual.appendChild(kartu);
+  judulKolom.forEach((judul) => {
+    const th = document.createElement("th");
+    th.textContent = judul;
+    barisKepala.appendChild(th);
   });
+
+  kepala.appendChild(barisKepala);
+  tabel.appendChild(kepala);
+
+  // Membuat isi tabel
+  const isiTabel = document.createElement("tbody");
+
+  daftarTiket.forEach((tiket) => {
+    const baris = document.createElement("tr");
+
+    const kolomNomor = document.createElement("td");
+    kolomNomor.textContent = tiket.nomor;
+
+    const kolomLayanan = document.createElement("td");
+    kolomLayanan.textContent = tiket.namaLayanan;
+
+    const kolomPrioritas = document.createElement("td");
+    kolomPrioritas.textContent = tiket.prioritas;
+
+    const kolomWaktu = document.createElement("td");
+    kolomWaktu.textContent = tiket.waktu;
+
+    const kolomStatus = document.createElement("td");
+    kolomStatus.textContent = tiket.status || "Menunggu";
+
+    // Memasukkan kolom ke baris
+    baris.appendChild(kolomNomor);
+    baris.appendChild(kolomLayanan);
+    baris.appendChild(kolomPrioritas);
+    baris.appendChild(kolomWaktu);
+    baris.appendChild(kolomStatus);
+
+    // Memasukkan baris ke tabel
+    isiTabel.appendChild(baris);
+  });
+
+  tabel.appendChild(isiTabel);
+  daftarTiketManual.appendChild(tabel);
 }
 
 // 11. RESET SELURUH ANTREAN
