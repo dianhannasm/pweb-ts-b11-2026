@@ -7,6 +7,9 @@ interface TiketOperator {
   prioritas: string;
   waktu: string;
   status: StatusTiket;
+  // Waktu peristiwa pemanggilan (ISO), dicatat saat operator menekan Panggil.
+  // Opsional: tiket lama bisa belum memiliki catatan ini.
+  waktuPanggil?: string;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -89,7 +92,12 @@ if (sesi !== null) {
             namaLayanan: item.namaLayanan,
             prioritas: item.prioritas,
             waktu: item.waktu,
-            status
+            status,
+            // Pertahankan catatan waktu panggilan bila ada (jangan hilang
+            // saat daftar tiket disimpan ulang oleh operator)
+            waktuPanggil: typeof item.waktuPanggil === "string"
+              ? item.waktuPanggil
+              : undefined
           }];
         });
       } catch {
@@ -218,6 +226,9 @@ if (sesi !== null) {
         return;
       }
       berikutnya.status = "Dipanggil";
+      // Catat waktu peristiwa pemanggilan (dasar card "Panggilan Terbaru"
+      // pada layar monitor). Tidak mengubah status, prioritas, atau urutan.
+      berikutnya.waktuPanggil = new Date().toISOString();
       simpanTiket();
       pesanOperator.textContent = `Tiket ${berikutnya.nomor} sedang dipanggil.`;
       render();

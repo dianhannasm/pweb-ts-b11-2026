@@ -42,7 +42,21 @@
   <!-- Konten utama dashboard -->
   <main>
     <section class="dashboard-heading" aria-labelledby="judulDashboard">
-      <h1 id="judulDashboard">Dashboard Admin</h1>
+      <div class="baris-heading">
+        <h1 id="judulDashboard">Dashboard Admin</h1>
+
+        <!-- Tombol riset antrean: compact, di atas agar mudah ditemukan -->
+        <div class="baris-aksi-heading">
+          <button
+            type="button"
+            id="tombolResetAntrean"
+            title="Hapus seluruh tiket dan reset nomor antrean"
+          >
+            ↻ Riset Antrean
+          </button>
+          <p id="pesanReset" role="status" aria-live="polite"></p>
+        </div>
+      </div>
     </section>
 
     <!-- Dua panel utama -->
@@ -195,30 +209,6 @@
         </section>
       </section>
     </div>
-
-    <!-- Panel reset antrean -->
-    <section
-      class="panel panel-reset"
-      aria-labelledby="judulResetAntrean"
-    >
-      <div class="reset-info">
-        <span class="ikon-reset" aria-hidden="true">↻</span>
-        <div>
-          <h2 id="judulResetAntrean">Reset Antrean</h2>
-          <p>
-            Gunakan fitur ini untuk menghapus seluruh data antrean
-            dan mengatur ulang nomor antrean.
-          </p>
-        </div>
-      </div>
-
-      <div class="reset-action">
-        <button type="button" id="tombolResetAntrean">
-          Reset Seluruh Antrean
-        </button>
-        <p id="pesanReset" role="status" aria-live="polite"></p>
-      </div>
-    </section>
   </main>
 
   <!-- Footer -->

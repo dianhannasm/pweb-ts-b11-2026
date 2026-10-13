@@ -76,7 +76,12 @@ if (sesi !== null) {
                         namaLayanan: item.namaLayanan,
                         prioritas: item.prioritas,
                         waktu: item.waktu,
-                        status
+                        status,
+                        // Pertahankan catatan waktu panggilan bila ada (jangan hilang
+                        // saat daftar tiket disimpan ulang oleh operator)
+                        waktuPanggil: typeof item.waktuPanggil === "string"
+                            ? item.waktuPanggil
+                            : undefined
                     }];
             });
         }
@@ -189,6 +194,9 @@ if (sesi !== null) {
             return;
         }
         berikutnya.status = "Dipanggil";
+        // Catat waktu peristiwa pemanggilan (dasar card "Panggilan Terbaru"
+        // pada layar monitor). Tidak mengubah status, prioritas, atau urutan.
+        berikutnya.waktuPanggil = new Date().toISOString();
         simpanTiket();
         pesanOperator.textContent = `Tiket ${berikutnya.nomor} sedang dipanggil.`;
         render();

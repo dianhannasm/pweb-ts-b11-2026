@@ -13,6 +13,8 @@ interface TiketAntreanLayar {
   prioritas: string;
   waktu: string;
   status: StatusTiketLayar;
+  // Waktu peristiwa pemanggilan (ISO). Opsional: tiket lama bisa belum punya.
+  waktuPanggil?: string;
 }
 
 function isRecordLayar(value: unknown): value is Record<string, unknown> {
@@ -81,7 +83,10 @@ function bacaDaftarTiketLayar(): TiketAntreanLayar[] {
         namaLayanan: item.namaLayanan,
         prioritas: item.prioritas,
         waktu: item.waktu,
-        status: status
+        status: status,
+        waktuPanggil: typeof item.waktuPanggil === "string"
+          ? item.waktuPanggil
+          : undefined
       }];
     });
   } catch {
@@ -245,6 +250,112 @@ function deteksiPanggilanBaru(aktifSekarang: Map<string, PanggilanAktif>): void 
   });
 }
 
+// ---- Ringkasan global (dua card utama layar) ----
+
+// Antrean menunggu seluruh poli, terurut hierarki prioritas
+// (VIP > Disabilitas > Lansia > Normal) lalu urutan pengambilan tiket.
+// Aturan urut sama dengan panel operator — murni tampilan, tidak mengubah
+// alur pemanggilan operator.
+function urutMenungguGlobal(daftarTiket: TiketAntreanLayar[]): TiketAntreanLayar[] {
+  return daftarTiket
+    .map((tiket, index) => ({ tiket, index }))
+    .filter(({ tiket }) => tiket.status === "Menunggu")
+    .sort((a, b) => {
+      const pA = urutanPrioritasLayar[a.tiket.prioritas] ?? 3;
+      const pB = urutanPrioritasLayar[b.tiket.prioritas] ?? 3;
+      return pA - pB || a.index - b.index;
+    })
+    .map(({ tiket }) => tiket);
+}
+
+// Tiket dengan peristiwa pemanggilan PALING AKHIR di seluruh poli,
+// berdasarkan waktu panggilan yang benar-benar tercatat (waktuPanggil) —
+// bukan urutan nomor atau urutan poli. Tiket tanpa catatan waktu panggilan
+// (data lama) dianggap lebih lama daripada yang punya catatan.
+function panggilanTerbaruGlobal(
+  daftarTiket: TiketAntreanLayar[]
+): TiketAntreanLayar | undefined {
+  let hasil: TiketAntreanLayar | undefined;
+  let waktuTerbaik: string | null = null;
+
+  daftarTiket.forEach((tiket) => {
+    if (tiket.status !== "Dipanggil") return;
+
+    if (tiket.waktuPanggil === undefined) {
+      if (hasil === undefined) hasil = tiket; // cadangan untuk data lama
+      return;
+    }
+
+    if (waktuTerbaik === null || tiket.waktuPanggil >= waktuTerbaik) {
+      hasil = tiket;
+      waktuTerbaik = tiket.waktuPanggil;
+    }
+  });
+
+  return hasil;
+}
+
+function formatWaktuLayar(iso: string): string {
+  try {
+    const tanggal = new Date(iso);
+    if (Number.isNaN(tanggal.getTime())) return iso;
+    return tanggal.toLocaleString("id-ID");
+  } catch {
+    return iso;
+  }
+}
+
+// Render dua card ringkasan global. Hanya membaca & menampilkan data:
+// tidak mengubah status, prioritas, nomor, maupun riwayat tiket, dan tidak
+// memicu pengumuman suara (pemicu suara tetap hanya deteksiPanggilanBaru).
+function renderRingkasanLayar(daftarTiket: TiketAntreanLayar[]): void {
+  const nomorTerbaru = elemenLayar("nomorTerbaru", HTMLParagraphElement);
+  const layananTerbaru = elemenLayar("layananTerbaru", HTMLParagraphElement);
+  const metaTerbaru = elemenLayar("metaTerbaru", HTMLDivElement);
+  const prioritasTerbaru = elemenLayar("prioritasTerbaru", HTMLSpanElement);
+  const waktuTerbaru = elemenLayar("waktuTerbaru", HTMLSpanElement);
+
+  const terbaru = panggilanTerbaruGlobal(daftarTiket);
+  if (terbaru === undefined) {
+    nomorTerbaru.textContent = "Belum ada panggilan";
+    nomorTerbaru.classList.add("kosong");
+    layananTerbaru.hidden = true;
+    metaTerbaru.hidden = true;
+  } else {
+    nomorTerbaru.textContent = terbaru.nomor;
+    nomorTerbaru.classList.remove("kosong");
+    layananTerbaru.textContent = terbaru.namaLayanan;
+    layananTerbaru.hidden = false;
+    prioritasTerbaru.textContent = terbaru.prioritas;
+    waktuTerbaru.textContent = terbaru.waktuPanggil !== undefined
+      ? formatWaktuLayar(terbaru.waktuPanggil)
+      : "—";
+    metaTerbaru.hidden = false;
+  }
+
+  const nomorBerikutnya = elemenLayar("nomorBerikutnya", HTMLParagraphElement);
+  const layananBerikutnya = elemenLayar("layananBerikutnya", HTMLParagraphElement);
+  const metaBerikutnya = elemenLayar("metaBerikutnya", HTMLDivElement);
+  const prioritasBerikutnya = elemenLayar("prioritasBerikutnya", HTMLSpanElement);
+  const waktuBerikutnya = elemenLayar("waktuBerikutnya", HTMLSpanElement);
+
+  const berikutnya = urutMenungguGlobal(daftarTiket)[0];
+  if (berikutnya === undefined) {
+    nomorBerikutnya.textContent = "Belum ada antrean berikutnya";
+    nomorBerikutnya.classList.add("kosong");
+    layananBerikutnya.hidden = true;
+    metaBerikutnya.hidden = true;
+  } else {
+    nomorBerikutnya.textContent = berikutnya.nomor;
+    nomorBerikutnya.classList.remove("kosong");
+    layananBerikutnya.textContent = berikutnya.namaLayanan;
+    layananBerikutnya.hidden = false;
+    prioritasBerikutnya.textContent = berikutnya.prioritas;
+    waktuBerikutnya.textContent = berikutnya.waktu;
+    metaBerikutnya.hidden = false;
+  }
+}
+
 function renderLayarMonitor(): void {
   const jenisList = bacaJenisAntreanLayar().filter((j) => j.aktif);
   const daftarTiket = bacaDaftarTiketLayar();
@@ -259,6 +370,9 @@ function renderLayarMonitor(): void {
     }
   });
   deteksiPanggilanBaru(aktifPerPoli);
+
+  // Ringkasan global (panggilan terbaru & antrean berikutnya) — tampilan saja
+  renderRingkasanLayar(daftarTiket);
 
   // Render Panel Layar per Jenis Antrean Aktif
   panelLayanan.replaceChildren();
@@ -280,16 +394,11 @@ function renderLayarMonitor(): void {
       (t) => t.kode === jenis.kode && t.status === "Dipanggil"
     );
 
-    // Ambil antrean berstatus "Menunggu" untuk layanan ini, urutkan berdasarkan hirarki prioritas
-    const tiketMenunggu = daftarTiket
-      .map((tiket, index) => ({ tiket, index }))
-      .filter(({ tiket }) => tiket.kode === jenis.kode && tiket.status === "Menunggu")
-      .sort((a, b) => {
-        const pA = urutanPrioritasLayar[a.tiket.prioritas] ?? 3;
-        const pB = urutanPrioritasLayar[b.tiket.prioritas] ?? 3;
-        return pA - pB || a.index - b.index;
-      })
-      .map(({ tiket }) => tiket);
+    // Antrean berstatus "Menunggu" untuk layanan ini — mengikuti urutan
+    // global prioritas, sehingga urutan per poli tetap sama seperti sebelumnya
+    const tiketMenunggu = urutMenungguGlobal(daftarTiket).filter(
+      (tiket) => tiket.kode === jenis.kode
+    );
 
     // 1. Header kartu: Nama Layanan & Kode
     const header = document.createElement("div");

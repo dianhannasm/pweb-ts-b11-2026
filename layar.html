@@ -46,6 +46,29 @@
   <!-- Konten Utama Layar Monitor -->
   <main class="layar-container">
 
+    <!-- Ringkasan global: panggilan terbaru & antrean berikutnya -->
+    <section class="seksi-ringkasan-layar" aria-label="Ringkasan global antrean">
+      <article class="kartu-ringkasan-layar kartu-panggilan-terbaru">
+        <p class="label-ringkasan-layar">PANGGILAN TERBARU</p>
+        <p id="nomorTerbaru" class="nomor-ringkasan-layar kosong">Belum ada panggilan</p>
+        <p id="layananTerbaru" class="layanan-ringkasan-layar" hidden>—</p>
+        <div id="metaTerbaru" class="meta-ringkasan-layar" hidden>
+          <span id="prioritasTerbaru" class="chip-ringkasan-layar">—</span>
+          <span id="waktuTerbaru" class="chip-ringkasan-layar chip-waktu">—</span>
+        </div>
+      </article>
+
+      <article class="kartu-ringkasan-layar kartu-antrean-berikutnya">
+        <p class="label-ringkasan-layar">ANTREAN BERIKUTNYA</p>
+        <p id="nomorBerikutnya" class="nomor-ringkasan-layar kosong">Belum ada antrean berikutnya</p>
+        <p id="layananBerikutnya" class="layanan-ringkasan-layar" hidden>—</p>
+        <div id="metaBerikutnya" class="meta-ringkasan-layar" hidden>
+          <span id="prioritasBerikutnya" class="chip-ringkasan-layar">—</span>
+          <span id="waktuBerikutnya" class="chip-ringkasan-layar chip-waktu">—</span>
+        </div>
+      </article>
+    </section>
+
     <!-- Panel Layar Per Jenis Antrean -->
     <section class="seksi-panel-layar" aria-label="Status per jenis layanan">
       <h2 class="layar-grid-judul">Status Antrean Tiap Layanan</h2>

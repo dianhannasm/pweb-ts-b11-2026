@@ -7,6 +7,7 @@
 body.halaman-login {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 12px;
   font-family: "Segoe UI", Arial, sans-serif;
   color: #17466f;
@@ -16,7 +17,7 @@ body.halaman-login {
   align-items: center;
 }
 
-/* Bingkai login */
+/* Bingkai login — tinggi menyesuaikan viewport (tidak memicu scroll) */
 
 .login-container {
   position: relative;
@@ -25,6 +26,7 @@ body.halaman-login {
   width: 100%;
   max-width: 1200px;
   min-height: 680px;
+  min-height: min(680px, calc(100dvh - 24px));
   overflow: hidden;
   border: 1px solid #c9f0f2;
   border-radius: 12px;
@@ -124,6 +126,7 @@ body.halaman-login {
   display: block;
   width: 112%;
   max-width: 530px;
+  max-height: 38vh;
   height: auto;
   object-fit: contain;
   margin-top: 12px;
@@ -187,7 +190,7 @@ body.halaman-login {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 49px;
+  height: 50px;
   border: 1px solid #d4e6f2;
   border-radius: 9px;
   background: #fff;
@@ -199,30 +202,20 @@ body.halaman-login {
   box-shadow: 0 0 0 3px rgba(36, 169, 208, 0.1);
 }
 
-.input-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  flex-shrink: 0;
-  color: #3779a8;
-  font-size: 18px;
-}
-
 .input-group input {
   width: 100%;
   height: 100%;
-  padding: 0 12px 0 0;
+  padding: 0 14px;
   border: none;
   outline: none;
   background: transparent;
   color: #204c70;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .input-group input::placeholder {
-  color: #809bb3;
+  color: #8ba6bd;
 }
 
 /* Tombol login */
@@ -468,6 +461,31 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   font-size: 24px;
 }
 
+/* Baris judul + aksi heading (tombol riset antrean) */
+.baris-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.baris-aksi-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Tombol riset antrean: compact, konsisten dengan warna aksi dashboard */
+#tombolResetAntrean {
+  min-height: 34px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: linear-gradient(110deg, #ff8293, #ed526b);
+  font-size: 12px;
+}
+
 /* Kartu ringkasan */
 .ringkasan {
   display: grid;
@@ -521,15 +539,17 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   font-weight: 700;
 }
 
-/* Dua panel utama */
+/* Dua panel utama — tinggi seimbang (stretch), isi tetap fleksibel */
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: start;
+  align-items: stretch;
   gap: 20px;
 }
 
 .dashboard-grid > .panel {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   margin: 0;
   padding: 22px;
@@ -538,6 +558,11 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.97);
   box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
+}
+
+/* Tabel jenis menempel ke bawah panel agar posisi konten antarpanel sejajar */
+.dashboard-grid .panel > .tabel-scroll {
+  margin-top: auto;
 }
 
 /* Judul panel */
@@ -810,6 +835,11 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
   font-weight: 600;
 }
 
+/* Pesan reset tampil sebaris di samping tombol (heading dashboard) */
+#pesanReset {
+  margin: 0;
+}
+
 /* Tiket berhasil diterbitkan */
 #hasilTiket:not(:empty) {
   margin-top: 12px;
@@ -841,8 +871,18 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
   min-width: 560px;
 }
 
-/* Kepala tabel tiket */
+/* Daftar tiket: scroll vertikal di dalam card (tinggi maksimal wajar),
+   header kolom tetap terlihat, dan halaman tidak memanjang tanpa batas. */
+#bagianDaftarTiket .tabel-scroll {
+  max-height: 420px;
+  overflow: auto;
+}
+
+/* Kepala tabel tiket (sticky saat isi tabel discroll) */
 #bagianDaftarTiket thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   padding: 14px 16px;
   background: #edf8ff;
   color: #28577e;
@@ -897,57 +937,6 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
   color: #8198ae;
   font-size: 12px;
   text-align: center;
-}
-
-/* Reset antrean */
-.panel-reset {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 20px;
-  padding: 18px;
-  border: 1px solid #dceef7;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
-}
-
-.reset-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.ikon-reset {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: #e1f5ff;
-  color: #168cc1;
-  font-size: 24px;
-}
-
-.reset-info h2 {
-  margin: 0 0 5px;
-  color: #174b7a;
-  font-size: 16px;
-}
-
-.reset-info p {
-  margin: 0;
-  color: #63809a;
-  font-size: 12px;
-}
-
-.reset-action #tombolResetAntrean {
-  min-height: 40px;
-  padding: 10px 16px;
-  background: linear-gradient(110deg, #ff8293, #ed526b);
 }
 
 /* Footer admin */
@@ -1033,7 +1022,7 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
     min-height: 65px;
   }
 
-  .panel-reset {
+  .baris-heading {
     align-items: flex-start;
   }
 }
@@ -1043,21 +1032,23 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
 body.halaman-operator {
   min-height: 100vh;
   margin: 0;
-  padding: 24px;
+  padding: 20px 28px;
   color: #17466f;
   background: #f2faff;
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Header panel operator — metrik mengikuti navbar dashboard agar konsisten */
+/* Header panel operator — mengikuti lebar & metrik navbar dashboard */
 .operator-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px;
-  max-width: 1120px;
-  margin: 0 auto 24px;
+  width: 100%;
+  max-width: 1400px;
+  min-height: 55px;
+  margin: 5px auto 24px;
   padding: 14px 22px;
   box-sizing: border-box;
   border: 1px solid #dceef7;
@@ -1091,8 +1082,11 @@ body.halaman-operator {
   box-shadow: 0 0 0 3px rgba(221, 80, 102, 0.25);
 }
 
+/* Konten utama operator — lebar sama dengan dashboard (1400px) agar
+   beberapa kartu poli dapat tampil berdampingan dengan nyaman */
 .operator-main {
-  max-width: 1120px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0;
 }
@@ -1182,7 +1176,7 @@ body.halaman-operator {
 .aksi-operator {
   display: flex;
   flex-wrap: wrap;
-  gap: 9px;
+  gap: 12px;
   margin-top: 24px;
 }
 
@@ -1295,7 +1289,7 @@ body.halaman-operator {
 
 /* Responsif operator */
 
-@media (max-width: 700px) {
+@media (max-width: 860px) {
   body.halaman-operator {
     padding: 12px;
   }
@@ -1341,6 +1335,99 @@ body.halaman-operator {
 /* Judul section panel layar */
 .seksi-panel-layar {
   margin: 0;
+}
+
+/* Dua card ringkasan global: panggilan terbaru & antrean berikutnya */
+.seksi-ringkasan-layar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+}
+
+.kartu-ringkasan-layar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 26px 20px;
+  border: 1px solid #dceef7;
+  border-top: 4px solid #168cc1;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.06);
+  text-align: center;
+}
+
+/* Aksen pemisah: antrean berikutnya (teal) — panggilan terbaru tetap biru */
+.kartu-antrean-berikutnya {
+  border-top-color: #16a987;
+}
+
+.label-ringkasan-layar {
+  margin: 0;
+  color: #63809a;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.nomor-ringkasan-layar {
+  margin: 0;
+  color: #087eb8;
+  font-size: clamp(42px, 5.5vw, 68px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 1px;
+}
+
+.kartu-antrean-berikutnya .nomor-ringkasan-layar {
+  color: #128c70;
+}
+
+/* Keadaan kosong tampil ringkas dan jelas */
+.nomor-ringkasan-layar.kosong {
+  color: #8198ae;
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.layanan-ringkasan-layar {
+  margin: 0;
+  color: #315979;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 650;
+}
+
+.meta-ringkasan-layar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.chip-ringkasan-layar {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #e1f5ff;
+  color: #168cc1;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-ringkasan-layar.chip-waktu {
+  background: #f1f6fa;
+  color: #63809a;
+}
+
+/* Atribut hidden harus tetap menutup elemen (kelas memakai display flex) */
+.meta-ringkasan-layar[hidden] {
+  display: none;
 }
 
 .layar-grid-judul {
@@ -1583,6 +1670,12 @@ body.halaman-operator {
 }
 
 /* Responsif layar monitor */
+@media (max-width: 820px) {
+  .seksi-ringkasan-layar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 600px) {
   .kartu-panel-body {
     padding: 16px 14px;
@@ -1599,14 +1692,28 @@ body.halaman-operator {
    (latar, header navbar, dan main), sama seperti halaman layar.
    Blok ini melengkapi konten yang sebelumnya belum punya CSS. */
 
-/* Kontainer utama agar lebar form tidak melebar penuh */
+/* Kontainer utama — card lebih luas agar memanfaatkan ruang layar,
+   dengan gutter nyaman di kedua sisi */
 body:not(.halaman-login):not(.halaman-operator) .ambil-container {
-  max-width: 880px;
+  max-width: 1080px;
+  padding: 0 28px;
 }
 
-/* Header mengikuti lebar yang sama agar sejajar dengan card utama */
-body:not(.halaman-login):not(.halaman-operator) > .ambil-header {
-  max-width: 880px;
+/* Halaman ambil antrean: header membentang penuh di bagian atas halaman,
+   bukan kartu mengambang (tanpa border-radius/border/shadow card). */
+body.halaman-ambil:not(.halaman-operator) {
+  padding: 0 0 40px;
+}
+
+body.halaman-ambil:not(.halaman-login):not(.halaman-operator) > .ambil-header {
+  max-width: none;
+  margin: 0 0 26px;
+  padding: 14px 28px;
+  border: none;
+  border-bottom: 1px solid #d8edf7;
+  border-radius: 0;
+  box-shadow: none;
+  background: linear-gradient(110deg, #ffffff 0%, #eefaff 60%, #eafaf5 100%);
 }
 
 /* Link ke layar monitor pada header */
@@ -1995,6 +2102,15 @@ body:not(.halaman-login):not(.halaman-operator) > .ambil-header {
 
 /* Responsif halaman ambil antrean */
 @media (max-width: 600px) {
+  .ambil-header {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .ambil-container {
+    padding: 0 16px;
+  }
+
   .ambil-card {
     padding: 20px 16px;
   }
