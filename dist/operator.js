@@ -13,8 +13,6 @@ function elemen(id, tipe) {
 // operator hanya untuk admin/moderator; selain itu dialihkan otomatis.
 const sesi = periksaAksesHalaman(["admin", "moderator"]);
 if (sesi !== null) {
-    const pengguna = elemen("infoPengguna", HTMLParagraphElement);
-    const logout = elemen("tombolLogout", HTMLButtonElement);
     const tiketAktif = elemen("tiketAktif", HTMLParagraphElement);
     const detailAktif = elemen("detailAktif", HTMLParagraphElement);
     const tiketBerikutnya = elemen("tiketBerikutnya", HTMLParagraphElement);
@@ -27,11 +25,8 @@ if (sesi !== null) {
     const tombolLewati = elemen("tombolLewati", HTMLButtonElement);
     const tombolSelesai = elemen("tombolSelesai", HTMLButtonElement);
     const pilihanPoli = elemen("pilihanPoli", HTMLSelectElement);
-    pengguna.textContent = `Halo, ${sesi.firstName} | Role: ${sesi.role}`;
-    logout.addEventListener("click", () => {
-        localStorage.removeItem("sesiAntrian");
-        window.location.href = "login.html";
-    });
+    // Info akun (nama & role) serta tombol logout pada navbar dirender
+    // oleh auth.js sehingga tampilannya sama dengan dashboard.
     // Baca jenis antrean aktif untuk daftar poli (parsing defensif)
     function bacaJenisAktif() {
         const data = localStorage.getItem("jenisAntrean");

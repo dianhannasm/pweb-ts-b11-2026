@@ -1027,7 +1027,8 @@ body.halaman-operator {
 
 /* Band header operator memakai gaya bersama .navbar (lihat seksi 2) */
 
-/* Tombol logout (dipakai bersama oleh halaman operator & dashboard admin) */
+/* Tombol logout (dipakai bersama oleh navbar semua halaman yang dilindungi:
+   dashboard, operator, ambil antrean, dan layar monitor) */
 #tombolLogout {
   min-height: 38px;
   padding: 8px 18px;

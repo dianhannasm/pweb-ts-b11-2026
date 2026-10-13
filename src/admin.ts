@@ -17,25 +17,9 @@ interface TiketAntrean {
 // Memakai guard bersama dari auth.js (dimuat sebelum admin.js di index.html):
 // - Belum login        -> dialihkan ke login.html
 // - Role user/dll      -> dialihkan ke halaman yang boleh diakses (ambil-antrian.html)
-// - Role admin/moderator -> diizinkan, sesi dikembalikan
-const sesiAdmin = periksaAksesHalaman(["admin", "moderator"]);
-
-if (sesiAdmin !== null) {
-  const infoPengguna = document.getElementById("infoPengguna");
-  const tombolLogout = document.getElementById("tombolLogout");
-
-  if (infoPengguna !== null) {
-    infoPengguna.textContent =
-      "Halo, " + sesiAdmin.firstName + " | Role: " + sesiAdmin.role;
-  }
-
-  if (tombolLogout !== null) {
-    tombolLogout.addEventListener("click", () => {
-      localStorage.removeItem("sesiAntrian");
-      window.location.href = "login.html";
-    });
-  }
-}
+// - Role admin/moderator -> diizinkan; nav & info akun navbar (nama, role,
+//   tombol logout) dirender oleh auth.js sehingga sama di semua halaman.
+periksaAksesHalaman(["admin", "moderator"]);
 
 // 2. MENGAMBIL DATA JENIS ANTREAN
 

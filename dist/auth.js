@@ -102,6 +102,19 @@ function renderNavigasiPeran(sesi) {
         nav.appendChild(tautan);
     }
 }
+// Render info akun pada navbar (nama, role, dan tombol logout) dari sesi
+// login yang sedang aktif — tampilan sama di semua halaman yang dilindungi,
+// mengikuti pola dashboard: "Halo, [nama] | Role: [role]" + tombol Logout.
+function renderInfoAkun(sesi) {
+    const info = document.getElementById("infoPengguna");
+    if (info !== null) {
+        info.textContent = "Halo, " + sesi.firstName + " | Role: " + sesi.role;
+    }
+    const tombol = document.getElementById("tombolLogout");
+    if (tombol !== null) {
+        tombol.addEventListener("click", logout);
+    }
+}
 // Guard utama: pastikan pengguna sudah login dan role-nya diizinkan mengakses
 // halaman saat ini. Mengembalikan sesi bila lolos; selain itu mengalihkan
 // halaman dan mengembalikan null (pemanggil wajib berhenti melakukan init).
@@ -126,8 +139,10 @@ function periksaAksesHalaman(daftarPeranDiizinkan) {
         window.location.href = tujuan;
         return null;
     }
-    // Navbar dirender dari role sesi: hanya halaman yang berhak yang tampil.
+    // Navbar & info akun dirender dari role/sesi: hanya halaman yang berhak
+    // yang tampil, dan info akun tampil sama di semua halaman.
     renderNavigasiPeran(sesi);
+    renderInfoAkun(sesi);
     return sesi;
 }
 function logout() {
