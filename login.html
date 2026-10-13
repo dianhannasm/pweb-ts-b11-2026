@@ -9,13 +9,20 @@
 
 <body class="halaman-login">
 
-  <main class="login-container">
+  <!-- Band header konsisten dengan halaman lain -->
+  <header class="navbar login-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <span class="brand-name">Antri Sehat Waras</span>
+    </div>
+  </header>
 
-    <!-- Bagian kiri -->
+  <!-- Layout login penuh layar, tanpa card pembungkus luar -->
+  <main class="login-layout">
+
+    <!-- Bagian kiri: komposisi di atas background utama -->
     <section class="login-visual">
       <div class="brand">
-        <div class="brand-icon">✚</div>
-
         <div>
           <h1>Antri Sehat Waras</h1>
           <p class="brand-subtitle">Sistem Antrian Rumah Sakit</p>
@@ -37,7 +44,7 @@
       </p>
     </section>
 
-    <!-- Bagian kanan -->
+    <!-- Bagian kanan: card form login (tetap berbentuk card) -->
     <section class="login-form-section">
       <div class="login-card">
 

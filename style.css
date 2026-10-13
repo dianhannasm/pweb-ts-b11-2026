@@ -4,39 +4,42 @@
   box-sizing: border-box;
 }
 
+/* Halaman login memenuhi viewport: background utama full-screen dengan
+   band header di atas dan dua kolom komposisi di bawahnya. */
 body.halaman-login {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 12px;
+  padding: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   color: #17466f;
-  background: #dff8fb;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Bingkai login — tinggi menyesuaikan viewport (tidak memicu scroll) */
-
-.login-container {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-  max-width: 1200px;
-  min-height: 680px;
-  min-height: min(680px, calc(100dvh - 24px));
-  overflow: hidden;
-  border: 1px solid #c9f0f2;
-  border-radius: 12px;
+  flex-direction: column;
   background:
     radial-gradient(
-      ellipse at 100% 10%,
+      ellipse at 100% 8%,
       rgba(177, 246, 225, 0.65),
       transparent 36%
     ),
-    linear-gradient(125deg, #e9fbff, #f2fffc 65%, #dff9ef);
+    radial-gradient(
+      ellipse at 0% 96%,
+      rgba(180, 236, 255, 0.5),
+      transparent 42%
+    ),
+    linear-gradient(125deg, #e9fbff, #f2fffc 60%, #dff9ef);
+}
+
+/* Layout login: dua kolom langsung di atas background (tanpa card luar) */
+.login-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 12px 28px 28px;
+  box-sizing: border-box;
 }
 
 /* Panel kiri login */
@@ -45,7 +48,7 @@ body.halaman-login {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 72px 50px 30px;
+  padding: 20px 50px 24px;
   overflow: hidden;
 }
 
@@ -287,18 +290,14 @@ body.halaman-login {
 /* Responsif login */
 
 @media (max-width: 760px) {
-  body.halaman-login {
-    padding: 12px;
-    align-items: flex-start;
-  }
-
-  .login-container {
+  .login-layout {
     grid-template-columns: 1fr;
-    min-height: auto;
+    align-items: start;
+    padding: 12px 16px 24px;
   }
 
   .login-visual {
-    padding: 30px 24px 12px;
+    padding: 12px 8px;
   }
 
   .brand h1 {
@@ -327,7 +326,7 @@ body.halaman-login {
   }
 
   .login-form-section {
-    padding: 18px 16px 26px;
+    padding: 8px 0 18px;
   }
 
   .login-card {
@@ -346,7 +345,7 @@ body.halaman-login {
 body:not(.halaman-login):not(.halaman-operator) {
   min-height: 100vh;
   margin: 0;
-  padding: 20px 28px;
+  padding: 0 0 32px;
   color: #193d63;
   font-family: "Segoe UI", Arial, sans-serif;
   background:
@@ -355,24 +354,26 @@ body:not(.halaman-login):not(.halaman-operator) {
   box-sizing: border-box;
 }
 
-/* Header dashboard */
-body:not(.halaman-login):not(.halaman-operator) > header.navbar,
-body:not(.halaman-login):not(.halaman-operator) > header:not(.operator-header) {
+/* Band header konsisten di semua halaman (dashboard, operator, layar,
+   ambil antrean, dan login): menempel penuh di bagian atas halaman
+   dengan bidang warna tersendiri — bukan card mengambang.
+   Terinspirasi bidang warna footer, disesuaikan proporsi header. */
+.navbar {
+  box-sizing: border-box;
   width: 100%;
-  max-width: 1400px;
-  min-height: 55px;
-  margin: 5px auto 24px;
-  padding: 14px 22px;
+  min-height: 56px;
+  margin: 0 0 24px;
+  padding: 11px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px;
-  box-sizing: border-box;
-  border: 1px solid #dceef7;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 5px 20px rgba(50, 128, 165, 0.07);
+  border: none;
+  border-bottom: 1px solid #d8edf7;
+  border-radius: 0;
+  background: linear-gradient(110deg, #ffffff 0%, #eefaff 60%, #eafaf5 100%);
+  box-shadow: none;
 }
 
 body:not(.halaman-login):not(.halaman-operator) > header h1 {
@@ -448,6 +449,8 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 28px;
+  box-sizing: border-box;
 }
 
 /* Judul dashboard */
@@ -558,11 +561,6 @@ body:not(.halaman-login):not(.halaman-operator) > main {
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.97);
   box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
-}
-
-/* Tabel jenis menempel ke bawah panel agar posisi konten antarpanel sejajar */
-.dashboard-grid .panel > .tabel-scroll {
-  margin-top: auto;
 }
 
 /* Judul panel */
@@ -852,8 +850,13 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
   line-height: 1.7;
 }
 
-/* Daftar tiket antrean */
+/* Daftar tiket antrean — bagian fleksibel agar konten card kanan mengikuti
+   tinggi card kiri secara proporsional (tanpa tinggi tetap yang memotong) */
 #bagianDaftarTiket {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
   width: 100%;
   min-width: 0;
   margin-top: 22px;
@@ -872,8 +875,10 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
 }
 
 /* Daftar tiket: scroll vertikal di dalam card (tinggi maksimal wajar),
-   header kolom tetap terlihat, dan halaman tidak memanjang tanpa batas. */
+   header kolom tetap terlihat, dan halaman tidak memanjang tanpa batas.
+   Flex:1 agar tinggi tabel mengikuti card saat card kiri lebih tinggi. */
 #bagianDaftarTiket .tabel-scroll {
+  flex: 1;
   max-height: 420px;
   overflow: auto;
 }
@@ -941,7 +946,7 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
 
 /* Footer admin */
 .footer {
-  margin: 28px -28px -20px;
+  margin: 28px 0 0;
   padding: 18px 20px;
   border-top: 1px solid #d2eaf5;
   background: rgba(255, 255, 255, 0.78);
@@ -986,12 +991,15 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
 
 @media (max-width: 760px) {
   body:not(.halaman-login):not(.halaman-operator) {
-    padding: 12px;
+    padding: 0 0 24px;
   }
 
-  body:not(.halaman-login):not(.halaman-operator) > header.navbar,
-  body:not(.halaman-login):not(.halaman-operator) > header:not(.operator-header) {
-    padding: 12px;
+  .navbar {
+    padding: 11px 16px;
+  }
+
+  body:not(.halaman-login):not(.halaman-operator) > main {
+    padding: 0 16px;
   }
 
   .ringkasan {
@@ -1007,9 +1015,7 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
   }
 
   .footer {
-    margin-right: -12px;
-    margin-left: -12px;
-    margin-bottom: -12px;
+    margin: 24px 0 0;
   }
 }
 
@@ -1032,30 +1038,13 @@ body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
 body.halaman-operator {
   min-height: 100vh;
   margin: 0;
-  padding: 20px 28px;
+  padding: 0 0 32px;
   color: #17466f;
   background: #f2faff;
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Header panel operator — mengikuti lebar & metrik navbar dashboard */
-.operator-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  width: 100%;
-  max-width: 1400px;
-  min-height: 55px;
-  margin: 5px auto 24px;
-  padding: 14px 22px;
-  box-sizing: border-box;
-  border: 1px solid #dceef7;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 5px 20px rgba(50, 128, 165, 0.07);
-}
+/* Band header operator memakai gaya bersama .navbar (lihat seksi 2) */
 
 /* Tombol logout (dipakai bersama oleh halaman operator & dashboard admin) */
 #tombolLogout {
@@ -1088,7 +1077,8 @@ body.halaman-operator {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 28px;
+  box-sizing: border-box;
 }
 
 /* Pemilih poli yang sedang ditangani */
@@ -1291,11 +1281,11 @@ body.halaman-operator {
 
 @media (max-width: 860px) {
   body.halaman-operator {
-    padding: 12px;
+    padding: 0 0 24px;
   }
 
-  .operator-header {
-    padding: 16px;
+  .operator-main {
+    padding: 0 16px;
   }
 
   .operator-poli {
@@ -1692,28 +1682,17 @@ body.halaman-operator {
    (latar, header navbar, dan main), sama seperti halaman layar.
    Blok ini melengkapi konten yang sebelumnya belum punya CSS. */
 
-/* Kontainer utama — card lebih luas agar memanfaatkan ruang layar,
-   dengan gutter nyaman di kedua sisi */
+/* Konten utama memanfaatkan layar semaksimal mungkin: lebar lebih optimal
+   dan tinggi mengisi sisa viewport (min-height, bukan tinggi tetap —
+   konten tetap dapat diakses bila melebihi). Band header & latar body
+   diatur aturan generik di seksi 2 agar konsisten dengan halaman lain. */
 body:not(.halaman-login):not(.halaman-operator) .ambil-container {
-  max-width: 1080px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
   padding: 0 28px;
-}
-
-/* Halaman ambil antrean: header membentang penuh di bagian atas halaman,
-   bukan kartu mengambang (tanpa border-radius/border/shadow card). */
-body.halaman-ambil:not(.halaman-operator) {
-  padding: 0 0 40px;
-}
-
-body.halaman-ambil:not(.halaman-login):not(.halaman-operator) > .ambil-header {
-  max-width: none;
-  margin: 0 0 26px;
-  padding: 14px 28px;
-  border: none;
-  border-bottom: 1px solid #d8edf7;
-  border-radius: 0;
-  box-shadow: none;
-  background: linear-gradient(110deg, #ffffff 0%, #eefaff 60%, #eafaf5 100%);
+  box-sizing: border-box;
+  min-height: calc(100dvh - 112px); /* sisa viewport setelah band header */
 }
 
 /* Link ke layar monitor pada header */
@@ -1734,9 +1713,10 @@ body.halaman-ambil:not(.halaman-login):not(.halaman-operator) > .ambil-header {
   color: #fff;
 }
 
-/* Kartu utama form ambil antrean */
+/* Kartu utama form ambil antrean — tumbuh mengisi ruang layar yang tersedia */
 .ambil-card {
-  padding: 28px;
+  flex: 1;
+  padding: 32px;
   border: 1px solid #dceef7;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.97);
@@ -2102,13 +2082,9 @@ body.halaman-ambil:not(.halaman-login):not(.halaman-operator) > .ambil-header {
 
 /* Responsif halaman ambil antrean */
 @media (max-width: 600px) {
-  .ambil-header {
-    padding-right: 16px;
-    padding-left: 16px;
-  }
-
   .ambil-container {
     padding: 0 16px;
+    min-height: 0; /* layar kecil: biarkan tinggi mengikuti konten */
   }
 
   .ambil-card {
