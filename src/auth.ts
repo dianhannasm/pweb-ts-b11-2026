@@ -61,6 +61,89 @@ function halamanTujuanPeran(role: string): string | null {
   return null;
 }
 
+// Daftar item navigasi navbar — disaring sesuai halaman yang memang boleh
+// dibuka oleh role bersangkutan (sumber kebenarannya adalah guard tiap halaman).
+interface ItemNavigasi {
+  label: string;
+  href: string;
+  bukaTabBaru: boolean;
+}
+
+const daftarNavigasi: ItemNavigasi[] = [
+  { label: "Dashboard", href: "index.html", bukaTabBaru: false },
+  { label: "Operator", href: "operator.html", bukaTabBaru: false },
+  { label: "Ambil Antrean", href: "ambil-antrian.html", bukaTabBaru: false },
+  { label: "Layar Antrean", href: "layar.html", bukaTabBaru: true }
+];
+
+// Halaman yang boleh dibuka tiap role — mencerminkan guard per halaman:
+// admin & moderator boleh semua halaman; user hanya ambil antrean + layar.
+function halamanDiizinkanPeran(role: string): string[] {
+  if (role === "admin" || role === "moderator") {
+    return ["index.html", "operator.html", "ambil-antrian.html", "layar.html"];
+  }
+
+  if (role === "user") {
+    return ["ambil-antrian.html", "layar.html"];
+  }
+
+  return [];
+}
+
+// Nama file halaman yang sedang dibuka, untuk menandai tautan aktif.
+// Mengembalikan "" bila lokasi tidak terbaca (mis. di lingkungan uji).
+function halamanSaatIni(): string {
+  const jalur = window.location.pathname;
+
+  if (typeof jalur !== "string") {
+    return "";
+  }
+
+  const mentah = jalur.split("/").pop() ?? "";
+  const bagian = mentah.split("?")[0].split("#")[0];
+
+  if (bagian === "") {
+    return "index.html"; // dibuka lewat folder, index menjadi halaman awal
+  }
+
+  return bagian;
+}
+
+// Render isi navbar berdasarkan role yang tersimpan di sesi autentikasi.
+// Tautan yang tidak berhak tidak pernah dibuat (bukan sekadar disembunyikan
+// lewat CSS), halaman yang sedang dibuka ditandai aria-current="page".
+function renderNavigasiPeran(sesi: SesiAntrian): void {
+  const nav = document.querySelector("nav[aria-label]");
+
+  if (nav === null) {
+    return; // halaman tanpa navbar (mis. bila container nav tidak tersedia)
+  }
+
+  const diizinkan = halamanDiizinkanPeran(sesi.role);
+  const halamanIni = halamanSaatIni();
+
+  nav.textContent = "";
+
+  for (const item of daftarNavigasi) {
+    if (!diizinkan.includes(item.href)) {
+      continue;
+    }
+
+    const tautan = document.createElement("a");
+    tautan.setAttribute("href", item.href);
+
+    if (item.href === halamanIni) {
+      tautan.setAttribute("aria-current", "page");
+    } else if (item.bukaTabBaru) {
+      tautan.setAttribute("target", "_blank");
+      tautan.setAttribute("rel", "noopener");
+    }
+
+    tautan.textContent = item.label;
+    nav.appendChild(tautan);
+  }
+}
+
 // Guard utama: pastikan pengguna sudah login dan role-nya diizinkan mengakses
 // halaman saat ini. Mengembalikan sesi bila lolos; selain itu mengalihkan
 // halaman dan mengembalikan null (pemanggil wajib berhenti melakukan init).
@@ -89,6 +172,9 @@ function periksaAksesHalaman(daftarPeranDiizinkan: string[]): SesiAntrian | null
     window.location.href = tujuan;
     return null;
   }
+
+  // Navbar dirender dari role sesi: hanya halaman yang berhak yang tampil.
+  renderNavigasiPeran(sesi);
 
   return sesi;
 }

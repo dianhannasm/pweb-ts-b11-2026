@@ -268,25 +268,6 @@ body.halaman-login {
   line-height: 1.6;
 }
 
-/* Footer login */
-
-.login-footer {
-  margin-top: 22px;
-  color: #8198ae;
-  text-align: center;
-  font-size: 11px;
-}
-
-.login-footer a {
-  color: #1689c5;
-  font-weight: 650;
-  text-decoration: none;
-}
-
-.login-footer a:hover {
-  text-decoration: underline;
-}
-
 /* Responsif login */
 
 @media (max-width: 760px) {
@@ -354,9 +335,9 @@ body:not(.halaman-login):not(.halaman-operator) {
   box-sizing: border-box;
 }
 
-/* Band header konsisten di semua halaman (dashboard, operator, layar,
-   ambil antrean, dan login): menempel penuh di bagian atas halaman
-   dengan bidang warna tersendiri — bukan card mengambang.
+/* Band header konsisten di semua halaman yang punya navbar (dashboard,
+   operator, layar, dan ambil antrean): menempel penuh di bagian atas
+   halaman dengan bidang warna tersendiri — bukan card mengambang.
    Terinspirasi bidang warna footer, disesuaikan proporsi header. */
 .navbar {
   box-sizing: border-box;
@@ -1682,41 +1663,19 @@ body.halaman-operator {
    (latar, header navbar, dan main), sama seperti halaman layar.
    Blok ini melengkapi konten yang sebelumnya belum punya CSS. */
 
-/* Konten utama memanfaatkan layar semaksimal mungkin: lebar lebih optimal
-   dan tinggi mengisi sisa viewport (min-height, bukan tinggi tetap —
-   konten tetap dapat diakses bila melebihi). Band header & latar body
-   diatur aturan generik di seksi 2 agar konsisten dengan halaman lain. */
+/* Konten utama halaman ambil: memakai lebar viewport semaksimal mungkin
+   (tanpa batas max-width) dengan gutter dari aturan generik di seksi 2,
+   sehingga grid layanan & prioritas tersebar horizontal. Tinggi sepenuhnya
+   mengikuti konten — min-height berbasis vh dihapus karena membuat card
+   meregang (ruang kosong) dan menimbulkan scroll semu di bagian bawah. */
 body:not(.halaman-login):not(.halaman-operator) .ambil-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1200px;
-  padding: 0 28px;
-  box-sizing: border-box;
-  min-height: calc(100dvh - 112px); /* sisa viewport setelah band header */
+  max-width: none;
 }
 
-/* Link ke layar monitor pada header */
-.link-ke-layar {
-  display: inline-block;
-  padding: 8px 14px;
-  border: 1px solid #168cc1;
-  border-radius: 8px;
-  color: #168cc1;
-  font-size: 13px;
-  font-weight: 650;
-  text-decoration: none;
-  transition: background 0.2s, color 0.2s;
-}
-
-.link-ke-layar:hover {
-  background: #168cc1;
-  color: #fff;
-}
-
-/* Kartu utama form ambil antrean — tumbuh mengisi ruang layar yang tersedia */
+/* Kartu utama form ambil antrean — tinggi mengikuti konten (tanpa flex:1
+   yang membuat card meregang penuh sehingga terlihat banyak ruang kosong) */
 .ambil-card {
-  flex: 1;
-  padding: 32px;
+  padding: 28px;
   border: 1px solid #dceef7;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.97);
@@ -2084,7 +2043,6 @@ body:not(.halaman-login):not(.halaman-operator) .ambil-container {
 @media (max-width: 600px) {
   .ambil-container {
     padding: 0 16px;
-    min-height: 0; /* layar kecil: biarkan tinggi mengikuti konten */
   }
 
   .ambil-card {
