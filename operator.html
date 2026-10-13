@@ -3,16 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Operator - SehatAntri</title>
+  <title>Panel Operator - Antri Sehat Waras</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="halaman-operator">
-  <header class="operator-header">
-    <div>
-      <h1>SehatWaras - Panel Operator</h1>
-      <p id="infoPengguna">Memuat pengguna...</p>
+  <!-- Navbar panel operator (pola sama dengan navbar dashboard admin) -->
+  <header class="navbar operator-header">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">✚</span>
+      <span class="brand-name">Antri Sehat Waras</span>
     </div>
-    <button type="button" id="tombolLogout">Logout</button>
+
+    <nav aria-label="Navigasi utama">
+      <a href="operator.html" aria-current="page">Panel Operator</a>
+      <a href="index.html">Kembali ke Dashboard</a>
+    </nav>
+
+    <div class="user-menu">
+      <p id="infoPengguna">Memuat pengguna...</p>
+      <button type="button" id="tombolLogout">Logout</button>
+    </div>
   </header>
 
   <main class="operator-main">
@@ -56,6 +66,7 @@
     <p id="pesanOperator" role="status" aria-live="polite"></p>
   </main>
 
+  <script src="dist/auth.js" defer></script>
   <script src="dist/operator.js" defer></script>
 </body>
 </html>

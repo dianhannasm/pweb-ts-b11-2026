@@ -1,27 +1,22 @@
 "use strict";
 // 1. PENGECEKAN LOGIN DAN ROLE
-const dataSesi = localStorage.getItem("sesiAntrian");
-if (dataSesi === null) {
-    window.location.href = "login.html";
-}
-else {
-    const sesi = JSON.parse(dataSesi);
-    if (sesi.role !== "admin" && sesi.role !== "moderator") {
-        window.location.href = "login.html";
+// Memakai guard bersama dari auth.js (dimuat sebelum admin.js di index.html):
+// - Belum login        -> dialihkan ke login.html
+// - Role user/dll      -> dialihkan ke halaman yang boleh diakses (ambil-antrian.html)
+// - Role admin/moderator -> diizinkan, sesi dikembalikan
+const sesiAdmin = periksaAksesHalaman(["admin", "moderator"]);
+if (sesiAdmin !== null) {
+    const infoPengguna = document.getElementById("infoPengguna");
+    const tombolLogout = document.getElementById("tombolLogout");
+    if (infoPengguna !== null) {
+        infoPengguna.textContent =
+            "Halo, " + sesiAdmin.firstName + " | Role: " + sesiAdmin.role;
     }
-    else {
-        const infoPengguna = document.getElementById("infoPengguna");
-        const tombolLogout = document.getElementById("tombolLogout");
-        if (infoPengguna !== null) {
-            infoPengguna.textContent =
-                "Halo, " + sesi.firstName + " | Role: " + sesi.role;
-        }
-        if (tombolLogout !== null) {
-            tombolLogout.addEventListener("click", () => {
-                localStorage.removeItem("sesiAntrian");
-                window.location.href = "login.html";
-            });
-        }
+    if (tombolLogout !== null) {
+        tombolLogout.addEventListener("click", () => {
+            localStorage.removeItem("sesiAntrian");
+            window.location.href = "login.html";
+        });
     }
 }
 // 2. MENGAMBIL DATA JENIS ANTREAN

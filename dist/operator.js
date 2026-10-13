@@ -2,27 +2,6 @@
 function isRecord(value) {
     return typeof value === "object" && value !== null && !Array.isArray(value);
 }
-function bacaSesi() {
-    const data = localStorage.getItem("sesiAntrian");
-    if (data === null)
-        return null;
-    try {
-        const parsed = JSON.parse(data);
-        if (!isRecord(parsed) ||
-            typeof parsed.role !== "string" ||
-            typeof parsed.firstName !== "string" ||
-            typeof parsed.username !== "string")
-            return null;
-        return {
-            role: parsed.role.toLowerCase(),
-            firstName: parsed.firstName,
-            username: parsed.username
-        };
-    }
-    catch {
-        return null;
-    }
-}
 function elemen(id, tipe) {
     const target = document.getElementById(id);
     if (!(target instanceof tipe)) {
@@ -30,11 +9,10 @@ function elemen(id, tipe) {
     }
     return target;
 }
-const sesi = bacaSesi();
-if (sesi === null || (sesi.role !== "admin" && sesi.role !== "moderator")) {
-    window.location.href = "login.html";
-}
-else {
+// Guard autentikasi & role bersama (auth.js dimuat sebelum operator.js):
+// operator hanya untuk admin/moderator; selain itu dialihkan otomatis.
+const sesi = periksaAksesHalaman(["admin", "moderator"]);
+if (sesi !== null) {
     const pengguna = elemen("infoPengguna", HTMLParagraphElement);
     const logout = elemen("tombolLogout", HTMLButtonElement);
     const tiketAktif = elemen("tiketAktif", HTMLParagraphElement);

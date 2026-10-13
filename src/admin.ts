@@ -1,10 +1,3 @@
-interface SesiAdmin {
-  token: string;
-  role: string;
-  firstName: string;
-  username: string;
-}
-
 interface JenisAntrean {
   kode: string;
   nama: string;
@@ -21,31 +14,26 @@ interface TiketAntrean {
 }
 
 // 1. PENGECEKAN LOGIN DAN ROLE
+// Memakai guard bersama dari auth.js (dimuat sebelum admin.js di index.html):
+// - Belum login        -> dialihkan ke login.html
+// - Role user/dll      -> dialihkan ke halaman yang boleh diakses (ambil-antrian.html)
+// - Role admin/moderator -> diizinkan, sesi dikembalikan
+const sesiAdmin = periksaAksesHalaman(["admin", "moderator"]);
 
-const dataSesi = localStorage.getItem("sesiAntrian");
+if (sesiAdmin !== null) {
+  const infoPengguna = document.getElementById("infoPengguna");
+  const tombolLogout = document.getElementById("tombolLogout");
 
-if (dataSesi === null) {
-  window.location.href = "login.html";
-} else {
-  const sesi = JSON.parse(dataSesi) as SesiAdmin;
+  if (infoPengguna !== null) {
+    infoPengguna.textContent =
+      "Halo, " + sesiAdmin.firstName + " | Role: " + sesiAdmin.role;
+  }
 
-  if (sesi.role !== "admin" && sesi.role !== "moderator") {
-    window.location.href = "login.html";
-  } else {
-    const infoPengguna = document.getElementById("infoPengguna");
-    const tombolLogout = document.getElementById("tombolLogout");
-
-    if (infoPengguna !== null) {
-      infoPengguna.textContent =
-        "Halo, " + sesi.firstName + " | Role: " + sesi.role;
-    }
-
-    if (tombolLogout !== null) {
-      tombolLogout.addEventListener("click", () => {
-        localStorage.removeItem("sesiAntrian");
-        window.location.href = "login.html";
-      });
-    }
+  if (tombolLogout !== null) {
+    tombolLogout.addEventListener("click", () => {
+      localStorage.removeItem("sesiAntrian");
+      window.location.href = "login.html";
+    });
   }
 }
 

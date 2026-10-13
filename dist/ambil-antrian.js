@@ -139,6 +139,12 @@ function renderPilihanLayananAmbil() {
     });
 }
 function inisialisasiAmbilAntrian() {
+    // Guard autentikasi: kios ambil antrean hanya untuk pengguna yang sudah login
+    // (role user, admin, atau moderator).
+    const sesi = periksaAksesHalaman(["user", "admin", "moderator"]);
+    if (sesi === null) {
+        return;
+    }
     const formAmbilTiket = elemenAmbil("formAmbilTiket", HTMLFormElement);
     const pesanForm = elemenAmbil("pesanForm", HTMLParagraphElement);
     const modalStruk = elemenAmbil("modalStruk", HTMLDivElement);

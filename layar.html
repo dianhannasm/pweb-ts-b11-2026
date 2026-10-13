@@ -32,17 +32,6 @@
   <!-- Konten Utama Layar Monitor -->
   <main class="layar-container">
 
-    <!-- Card Nomor Sedang Dipanggil (Hero) -->
-    <section class="hero-panggilan" aria-label="Nomor antrean sedang dipanggil">
-      <p class="hero-subjudul">NOMOR ANTREAN SEDANG DIPANGGIL</p>
-      <h2 id="nomorUtama" class="hero-nomor" aria-live="polite">—</h2>
-      <p id="layananUtama" class="hero-layanan">Belum ada antrean yang dipanggil</p>
-      <div id="metaUtama" class="hero-meta" hidden>
-        <span id="prioritasUtama" class="badge-prioritas">Normal</span>
-        <span id="waktuUtama" class="badge-waktu"></span>
-      </div>
-    </section>
-
     <!-- Panel Layar Per Jenis Antrean -->
     <section class="seksi-panel-layar" aria-label="Status per jenis layanan">
       <h2 class="layar-grid-judul">Status Antrean Tiap Layanan</h2>
@@ -53,6 +42,7 @@
 
   </main>
 
+  <script src="dist/auth.js" defer></script>
   <script src="dist/layar.js" defer></script>
 </body>
 </html>

@@ -78,30 +78,7 @@ const urutanPrioritasLayar = {
 function renderLayarMonitor() {
     const jenisList = bacaJenisAntreanLayar().filter((j) => j.aktif);
     const daftarTiket = bacaDaftarTiketLayar();
-    const nomorUtama = elemenLayar("nomorUtama", HTMLHeadingElement);
-    const layananUtama = elemenLayar("layananUtama", HTMLParagraphElement);
-    const metaUtama = elemenLayar("metaUtama", HTMLDivElement);
-    const prioritasUtama = elemenLayar("prioritasUtama", HTMLSpanElement);
-    const waktuUtama = elemenLayar("waktuUtama", HTMLSpanElement);
     const panelLayanan = elemenLayar("panelLayanan", HTMLDivElement);
-    // Cari tiket yang saat ini berstatus "Dipanggil".
-    // Bisa lebih dari satu poli aktif bersamaan, jadi tampilkan yang terakhir dipanggil.
-    const tiketDipanggilUtama = [...daftarTiket]
-        .reverse()
-        .find((t) => t.status === "Dipanggil");
-    if (tiketDipanggilUtama !== undefined) {
-        nomorUtama.textContent = tiketDipanggilUtama.nomor;
-        layananUtama.textContent = `${tiketDipanggilUtama.namaLayanan} (Kode ${tiketDipanggilUtama.kode})`;
-        prioritasUtama.textContent = tiketDipanggilUtama.prioritas;
-        prioritasUtama.className = `badge-prioritas prioritas-${tiketDipanggilUtama.prioritas.toLowerCase()}`;
-        waktuUtama.textContent = `Waktu: ${tiketDipanggilUtama.waktu}`;
-        metaUtama.hidden = false;
-    }
-    else {
-        nomorUtama.textContent = "—";
-        layananUtama.textContent = "Belum ada nomor antrean yang dipanggil";
-        metaUtama.hidden = true;
-    }
     // Render Panel Layar per Jenis Antrean Aktif
     panelLayanan.replaceChildren();
     if (jenisList.length === 0) {
@@ -144,7 +121,10 @@ function renderLayarMonitor() {
         body.className = "kartu-panel-body";
         const labelDipanggil = document.createElement("span");
         labelDipanggil.className = "label-status";
-        labelDipanggil.textContent = "Sedang Dipanggil";
+        labelDipanggil.textContent =
+            tiketDipanggilJenis !== undefined
+                ? "Sedang Dipanggil"
+                : "Tidak Ada Antrean Dipanggil";
         const nomorDipanggil = document.createElement("div");
         nomorDipanggil.className = "nomor-dipanggil";
         nomorDipanggil.textContent = tiketDipanggilJenis !== undefined ? tiketDipanggilJenis.nomor : "—";
@@ -182,6 +162,12 @@ function renderLayarMonitor() {
     });
 }
 function inisialisasiLayar() {
+    // Guard autentikasi: layar monitor hanya untuk pengguna yang sudah login
+    // (role user, admin, atau moderator).
+    const sesi = periksaAksesHalaman(["user", "admin", "moderator"]);
+    if (sesi === null) {
+        return;
+    }
     const tombolFullscreen = elemenLayar("tombolFullscreen", HTMLButtonElement);
     tombolFullscreen.addEventListener("click", () => {
         if (document.fullscreenElement === null) {
