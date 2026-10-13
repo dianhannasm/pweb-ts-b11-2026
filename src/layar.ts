@@ -107,8 +107,11 @@ function renderLayarMonitor(): void {
   const waktuUtama = elemenLayar("waktuUtama", HTMLSpanElement);
   const panelLayanan = elemenLayar("panelLayanan", HTMLDivElement);
 
-  // Cari tiket yang saat ini sedang berstatus "Dipanggil"
-  const tiketDipanggilUtama = daftarTiket.find((t) => t.status === "Dipanggil");
+  // Cari tiket yang saat ini berstatus "Dipanggil".
+  // Bisa lebih dari satu poli aktif bersamaan, jadi tampilkan yang terakhir dipanggil.
+  const tiketDipanggilUtama = [...daftarTiket]
+    .reverse()
+    .find((t) => t.status === "Dipanggil");
 
   if (tiketDipanggilUtama !== undefined) {
     nomorUtama.textContent = tiketDipanggilUtama.nomor;

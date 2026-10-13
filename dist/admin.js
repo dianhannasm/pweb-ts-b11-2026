@@ -76,7 +76,10 @@ function tampilkanJenisAntrean() {
         const kolomNama = document.createElement("td");
         kolomNama.textContent = item.nama;
         const kolomStatus = document.createElement("td");
-        kolomStatus.textContent = item.aktif ? "Aktif" : "Nonaktif";
+        const labelStatus = document.createElement("span");
+        labelStatus.className = item.aktif ? "status" : "status-nonaktif";
+        labelStatus.textContent = item.aktif ? "Aktif" : "Nonaktif";
+        kolomStatus.appendChild(labelStatus);
         const kolomAksi = document.createElement("td");
         const tombolStatus = document.createElement("button");
         tombolStatus.type = "button";
@@ -172,80 +175,56 @@ function tampilkanPilihanLayanan() {
         }
     });
 }
-
 // 10. MENAMPILKAN DAFTAR TIKET DALAM BENTUK TABEL
 function tampilkanDaftarTiket() {
     daftarTiketManual.innerHTML = "";
     const daftarTiket = ambilDaftarTiket();
-
     // Jika belum ada tiket
     if (daftarTiket.length === 0) {
-        const pesan = document.createElement("p");
-        pesan.textContent = "Belum ada tiket antrean.";
-        daftarTiketManual.appendChild(pesan);
+        const baris = document.createElement("tr");
+        const kolom = document.createElement("td");
+        kolom.colSpan = 5;
+        kolom.textContent = "Belum ada tiket antrean.";
+        baris.appendChild(kolom);
+        daftarTiketManual.appendChild(baris);
         return;
     }
-
-    // Membuat tabel
-    const tabel = document.createElement("table");
-
-    // Membuat kepala tabel
-    const kepala = document.createElement("thead");
-    const barisKepala = document.createElement("tr");
-
-    const judulKolom = [
-        "Nomor",
-        "Layanan",
-        "Prioritas",
-        "Tanggal",
-        "Status"
-    ];
-
-    judulKolom.forEach((judul) => {
-        const th = document.createElement("th");
-        th.textContent = judul;
-        barisKepala.appendChild(th);
-    });
-
-    kepala.appendChild(barisKepala);
-    tabel.appendChild(kepala);
-
-    // Membuat isi tabel
-    const isiTabel = document.createElement("tbody");
-
+    // Baris mengikuti urutan kolom <thead> statis di index.html:
+    // No. Tiket | Layanan | Prioritas | Status | Waktu
     daftarTiket.forEach((tiket) => {
         const baris = document.createElement("tr");
-
         const kolomNomor = document.createElement("td");
         kolomNomor.textContent = tiket.nomor;
-
         const kolomLayanan = document.createElement("td");
         kolomLayanan.textContent = tiket.namaLayanan;
-
         const kolomPrioritas = document.createElement("td");
-        kolomPrioritas.textContent = tiket.prioritas;
-
+        const labelPrioritas = document.createElement("span");
+        labelPrioritas.className = "prioritas";
+        labelPrioritas.textContent = tiket.prioritas;
+        kolomPrioritas.appendChild(labelPrioritas);
+        const statusTiket = tiket.status || "Menunggu";
+        const kolomStatus = document.createElement("td");
+        const labelStatusTiket = document.createElement("span");
+        labelStatusTiket.className =
+            statusTiket === "Selesai"
+                ? "status"
+                : statusTiket === "Dipanggil"
+                    ? "status-dipanggil"
+                    : statusTiket === "Dilewati"
+                        ? "status-dilewati"
+                        : "status-menunggu";
+        labelStatusTiket.textContent = statusTiket;
+        kolomStatus.appendChild(labelStatusTiket);
         const kolomWaktu = document.createElement("td");
         kolomWaktu.textContent = tiket.waktu;
-
-        const kolomStatus = document.createElement("td");
-        kolomStatus.textContent = tiket.status || "Menunggu";
-
-        // Memasukkan kolom ke baris
         baris.appendChild(kolomNomor);
         baris.appendChild(kolomLayanan);
         baris.appendChild(kolomPrioritas);
-        baris.appendChild(kolomWaktu);
         baris.appendChild(kolomStatus);
-
-        // Memasukkan baris ke tabel
-        isiTabel.appendChild(baris);
+        baris.appendChild(kolomWaktu);
+        daftarTiketManual.appendChild(baris);
     });
-
-    tabel.appendChild(isiTabel);
-    daftarTiketManual.appendChild(tabel);
 }
-
 // 11. RESET SELURUH ANTREAN
 tombolResetAntrean.addEventListener("click", () => {
     const yakin = confirm("Yakin ingin menghapus seluruh tiket dan mereset nomor antrean?");

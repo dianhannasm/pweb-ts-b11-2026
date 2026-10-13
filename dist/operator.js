@@ -48,11 +48,33 @@ else {
     const tombolPanggil = elemen("tombolPanggil", HTMLButtonElement);
     const tombolLewati = elemen("tombolLewati", HTMLButtonElement);
     const tombolSelesai = elemen("tombolSelesai", HTMLButtonElement);
+    const pilihanPoli = elemen("pilihanPoli", HTMLSelectElement);
     pengguna.textContent = `Halo, ${sesi.firstName} | Role: ${sesi.role}`;
     logout.addEventListener("click", () => {
         localStorage.removeItem("sesiAntrian");
         window.location.href = "login.html";
     });
+    // Baca jenis antrean aktif untuk daftar poli (parsing defensif)
+    function bacaJenisAktif() {
+        const data = localStorage.getItem("jenisAntrean");
+        if (data === null)
+            return [];
+        try {
+            const parsed = JSON.parse(data);
+            if (!Array.isArray(parsed))
+                return [];
+            return parsed.filter(isRecord).flatMap((item) => {
+                if (typeof item.kode !== "string" ||
+                    typeof item.nama !== "string" ||
+                    item.aktif !== true)
+                    return [];
+                return [{ kode: item.kode, nama: item.nama }];
+            });
+        }
+        catch {
+            return [];
+        }
+    }
     function bacaTiket() {
         const data = localStorage.getItem("daftarAntrean");
         if (data === null)
@@ -85,6 +107,7 @@ else {
         }
     }
     let daftarTiket = bacaTiket();
+    let poliTerpilih = "";
     const urutanPrioritas = {
         VIP: 0,
         Disabilitas: 1,
@@ -102,6 +125,22 @@ else {
         })
             .map(({ tiket }) => tiket);
     }
+    // Antrean menunggu untuk poli terpilih (hirarki prioritas tetap berlaku per poli)
+    function menungguPoli() {
+        return antrianMenunggu().filter((tiket) => tiket.kode === poliTerpilih);
+    }
+    // Daftar poli: jenis antrean aktif, dilengkapi kode yang ada pada tiket
+    function daftarPoliTersedia() {
+        const daftar = bacaJenisAktif();
+        const sudahAda = new Set(daftar.map((poli) => poli.kode));
+        daftarTiket.forEach((tiket) => {
+            if (!sudahAda.has(tiket.kode)) {
+                sudahAda.add(tiket.kode);
+                daftar.push({ kode: tiket.kode, nama: tiket.namaLayanan });
+            }
+        });
+        return daftar;
+    }
     function simpanTiket() {
         localStorage.setItem("daftarAntrean", JSON.stringify(daftarTiket));
     }
@@ -111,8 +150,22 @@ else {
             : `${tiket.namaLayanan} | ${tiket.prioritas}`;
     }
     function render() {
-        const aktif = daftarTiket.find((tiket) => tiket.status === "Dipanggil");
-        const menunggu = antrianMenunggu();
+        // Perbarui pilihan poli: jenis antrean aktif + poli yang masih punya tiket
+        const poliTersedia = daftarPoliTersedia();
+        if (!poliTersedia.some((poli) => poli.kode === poliTerpilih)) {
+            poliTerpilih = poliTersedia[0]?.kode ?? "";
+        }
+        pilihanPoli.replaceChildren();
+        poliTersedia.forEach((poli) => {
+            const opsi = document.createElement("option");
+            opsi.value = poli.kode;
+            opsi.textContent = `${poli.kode} - ${poli.nama}`;
+            pilihanPoli.appendChild(opsi);
+        });
+        pilihanPoli.value = poliTerpilih;
+        // Status poli terpilih: satu tiket dipanggil pada satu waktu per poli
+        const aktif = daftarTiket.find((tiket) => tiket.kode === poliTerpilih && tiket.status === "Dipanggil");
+        const menunggu = menungguPoli();
         tiketAktif.textContent = aktif?.nomor ?? "—";
         detailAktif.textContent = aktif === undefined
             ? "Belum ada tiket yang dipanggil."
@@ -136,7 +189,7 @@ else {
         tombolPanggil.disabled = menunggu.length === 0 && aktif === undefined;
     }
     function perbaruiStatus(status) {
-        const aktif = daftarTiket.find((tiket) => tiket.status === "Dipanggil");
+        const aktif = daftarTiket.find((tiket) => tiket.kode === poliTerpilih && tiket.status === "Dipanggil");
         if (aktif === undefined)
             return;
         aktif.status = status;
@@ -145,10 +198,10 @@ else {
         render();
     }
     tombolPanggil.addEventListener("click", () => {
-        const aktif = daftarTiket.find((tiket) => tiket.status === "Dipanggil");
+        const aktif = daftarTiket.find((tiket) => tiket.kode === poliTerpilih && tiket.status === "Dipanggil");
         if (aktif !== undefined)
             aktif.status = "Selesai";
-        const berikutnya = antrianMenunggu()[0];
+        const berikutnya = menungguPoli()[0];
         if (berikutnya === undefined) {
             simpanTiket();
             pesanOperator.textContent = aktif === undefined
@@ -164,5 +217,10 @@ else {
     });
     tombolLewati.addEventListener("click", () => perbaruiStatus("Dilewati"));
     tombolSelesai.addEventListener("click", () => perbaruiStatus("Selesai"));
+    // Ganti poli yang sedang ditangani
+    pilihanPoli.addEventListener("change", () => {
+        poliTerpilih = pilihanPoli.value;
+        render();
+    });
     render();
 }

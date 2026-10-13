@@ -411,6 +411,24 @@ body:not(.halaman-login):not(.halaman-operator) .navbar nav a:hover {
   color: #086b9e;
 }
 
+body:not(.halaman-login):not(.halaman-operator) .navbar nav a[aria-current="page"] {
+  color: #086b9e;
+  font-weight: 700;
+}
+
+/* Menu pengguna pada navbar admin */
+.navbar .user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar #infoPengguna {
+  margin: 0;
+  color: #63809a;
+  font-size: 13px;
+}
+
 /* Konten utama dashboard */
 body:not(.halaman-login):not(.halaman-operator) > main {
   width: 100%;
@@ -420,26 +438,13 @@ body:not(.halaman-login):not(.halaman-operator) > main {
 
 /* Judul dashboard */
 .dashboard-heading {
-  margin: 20px 0 18px;
-}
-
-.dashboard-heading .eyebrow {
-  color: #20a6bb;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  margin: 0 0 18px;
 }
 
 .dashboard-heading h1 {
-  margin: 6px 0;
+  margin: 0;
   color: #174b7a;
-  font-size: 32px;
-}
-
-.dashboard-heading p {
-  margin: 6px 0;
-  color: #63809a;
-  font-size: 14px;
+  font-size: 24px;
 }
 
 /* Kartu ringkasan */
@@ -631,6 +636,11 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   box-shadow: 0 3px 10px rgba(22, 143, 208, 0.16);
 }
 
+body:not(.halaman-login):not(.halaman-operator) main button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 143, 208, 0.3);
+}
+
 .dashboard-grid .panel form button {
   margin-top: 5px;
 }
@@ -736,6 +746,38 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   white-space: nowrap;
 }
 
+/* Badge status tambahan (tabel jenis antrean & daftar tiket) */
+.status-nonaktif,
+.status-dilewati {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-nonaktif {
+  background: #eef1f4;
+  color: #6b7c8c;
+}
+
+.status-dipanggil {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #fff4d6;
+  color: #a06b00;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-dilewati {
+  background: #fdecec;
+  color: #d1435b;
+}
+
 /* Pesan hasil form */
 #pesanAntrean,
 #pesanReset,
@@ -772,31 +814,14 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
   font-size: 16px;
 }
 
-/* Pembungkus tabel tiket */
-#daftarTiketManual {
-  display: block;
-  width: 100%;
-  min-width: 0;
-  overflow-x: auto;
-  border: 1px solid #dceef7;
-  border-radius: 10px;
-  background: #fff;
-}
-
-/* Tabel tiket */
-#daftarTiketManual table {
-  width: 100%;
+/* Tabel tiket — struktur tunggal: thead statis + baris dari admin.ts.
+   Bingkai & overflow ditangani .tabel-scroll dan aturan generik panel. */
+.tabel-tiket {
   min-width: 560px;
-  margin: 0;
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  background: #fff;
-  font-size: 12px;
 }
 
 /* Kepala tabel tiket */
-#daftarTiketManual thead th {
+#bagianDaftarTiket thead th {
   padding: 14px 16px;
   background: #edf8ff;
   color: #28577e;
@@ -808,29 +833,24 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 }
 
 /* Isi tabel tiket */
-#daftarTiketManual tbody td {
+#bagianDaftarTiket tbody td {
   padding: 16px;
   color: #365a7b;
   text-align: left;
   vertical-align: middle;
   line-height: 1.6;
+  border-top: none;
   border-bottom: 1px solid #e5eef5;
 }
 
-#daftarTiketManual tbody tr:last-child td {
+#bagianDaftarTiket tbody tr:last-child td {
   border-bottom: none;
 }
 
-#daftarTiketManual tbody tr:nth-child(even) {
-  background: #f7fcff;
-}
-
-#daftarTiketManual tbody tr:hover {
-  background: #edf9ff;
-}
+/* Zebra & hover baris tiket sudah diatur aturan generik panel di seksi 2 */
 
 /* Nomor tiket */
-#daftarTiketManual tbody td:first-child {
+#bagianDaftarTiket tbody td:first-child {
   color: #087eb8;
   font-weight: 700;
   white-space: nowrap;
@@ -839,6 +859,9 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 /* Status dan prioritas di daftar tiket */
 #daftarTiketManual .status,
 #daftarTiketManual .status-antrean,
+#daftarTiketManual .status-menunggu,
+#daftarTiketManual .status-dipanggil,
+#daftarTiketManual .status-dilewati,
 #daftarTiketManual .prioritas {
   display: inline-block;
   padding: 5px 10px;
@@ -848,8 +871,7 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
 }
 
 /* Pesan saat daftar tiket kosong */
-#daftarTiketManual > p {
-  margin: 0;
+#bagianDaftarTiket td[colspan="5"] {
   padding: 20px;
   color: #8198ae;
   font-size: 12px;
@@ -974,10 +996,6 @@ body:not(.halaman-login):not(.halaman-operator) main button:hover {
     padding: 9px 7px;
   }
 
-  #daftarTiketManual table {
-    min-width: 560px;
-  }
-
   .footer {
     margin-right: -12px;
     margin-left: -12px;
@@ -1028,15 +1046,84 @@ body.halaman-operator {
   margin: 0;
 }
 
+.operator-header h1 {
+  color: #174b7a;
+  font-size: 20px;
+}
+
 .operator-header p {
   margin-top: 6px;
   color: #63809a;
+}
+
+/* Tombol logout (dipakai bersama oleh halaman operator & dashboard admin) */
+#tombolLogout {
+  min-height: 38px;
+  padding: 8px 18px;
+  border: 1px solid #e2b6bd;
+  border-radius: 8px;
+  background: #fff;
+  color: #d1435b;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+#tombolLogout:hover {
+  background: #fff0f2;
+  border-color: #dd5066;
+}
+
+#tombolLogout:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(221, 80, 102, 0.25);
 }
 
 .operator-main {
   max-width: 1120px;
   margin: 0 auto;
   padding: 0;
+}
+
+/* Pemilih poli yang sedang ditangani */
+.operator-poli {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 20px;
+  border: 1px solid #e2eef7;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 8px 28px rgba(32, 89, 130, 0.06);
+}
+
+.operator-poli label {
+  color: #315979;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.operator-poli select {
+  min-width: 220px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #d2e6f2;
+  border-radius: 8px;
+  background: #fff;
+  color: #214d72;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.operator-poli select:focus {
+  outline: none;
+  border-color: #22afd0;
+  box-shadow: 0 0 0 3px rgba(34, 175, 208, 0.1);
 }
 
 .operator-grid {
@@ -1063,6 +1150,7 @@ body.halaman-operator {
 .halaman-operator .kartu-antrian h2 {
   margin-top: 0;
   color: #28577e;
+  font-size: 18px;
 }
 
 .nomor-tiket {
@@ -1088,23 +1176,100 @@ body.halaman-operator {
   margin-top: 24px;
 }
 
+/* Tombol aksi operator: primer (Panggil) & sekunder (Lewati/Selesai) */
 .aksi-operator button {
   width: auto;
   min-width: 110px;
+  min-height: 42px;
   margin: 0;
+  padding: 10px 18px;
+  border: 1px solid #168cc1;
+  border-radius: 8px;
+  background: #fff;
+  color: #168cc1;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+.aksi-operator button:hover:not(:disabled) {
+  background: #eaf6fd;
+}
+
+.aksi-operator button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
+}
+
+.aksi-operator button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .aksi-operator .tombol-primer {
+  border: none;
   background: linear-gradient(120deg, #1596cf, #16a987);
+  color: #fff;
+}
+
+.aksi-operator .tombol-primer:hover:not(:disabled) {
+  background: linear-gradient(120deg, #1596cf, #16a987);
+  filter: brightness(1.06);
 }
 
 .halaman-operator .tabel-antrian-wrap {
   overflow-x: auto;
 }
 
+/* Tabel Daftar Tunggu */
 .halaman-operator .tabel-antrian {
   width: 100%;
+  min-width: 460px;
   border-collapse: collapse;
+}
+
+.halaman-operator .tabel-antrian th {
+  padding: 11px 14px;
+  border: 1px solid #dceef7;
+  background: #eaf7fd;
+  color: #28577e;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.halaman-operator .tabel-antrian td {
+  padding: 11px 14px;
+  border: 1px solid #e6eef5;
+  color: #365a7b;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.halaman-operator .tabel-antrian tbody tr:nth-child(even) {
+  background: #f7fcff;
+}
+
+.halaman-operator .tabel-antrian tbody tr:hover {
+  background: #edf9ff;
+}
+
+/* Kolom nomor tiket ditonjolkan */
+.halaman-operator .tabel-antrian td:first-child {
+  color: #087eb8;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Jumlah antrean menunggu pada judul kartu */
+#jumlahTunggu {
+  margin-left: 6px;
+  color: #8198ae;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .halaman-operator .pesan-kosong {
@@ -1129,6 +1294,15 @@ body.halaman-operator {
     padding: 16px;
   }
 
+  .operator-poli {
+    padding: 12px 14px;
+  }
+
+  .operator-poli select {
+    min-width: 0;
+    flex: 1;
+  }
+
   .operator-grid {
     grid-template-columns: 1fr;
   }
@@ -1139,5 +1313,744 @@ body.halaman-operator {
 
   .aksi-operator button {
     flex: 1 1 100%;
+  }
+}
+
+/* 4. LAYAR MONITOR ANTREAN */
+/* Catatan: body.halaman-layar memakai aturan umum di seksi 2 (karena bukan
+   halaman-login/operator), sehingga latar, padding, dan header sudah terstyle.
+   Blok ini hanya melengkapi konten <main> yang sebelumnya belum punya CSS. */
+
+/* Konten utama layar */
+.layar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Hero nomor yang sedang dipanggil */
+.hero-panggilan {
+  margin: 0;
+  padding: clamp(30px, 5vw, 56px) 24px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0b3d66, #1284bd);
+  box-shadow: 0 10px 30px rgba(11, 61, 102, 0.25);
+  color: #fff;
+  text-align: center;
+}
+
+.hero-subjudul {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: clamp(12px, 1.6vw, 15px);
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.hero-nomor {
+  margin: 14px 0;
+  color: #fff;
+  font-size: clamp(64px, 12vw, 150px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.hero-layanan {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(16px, 2.4vw, 24px);
+  font-weight: 600;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Badge prioritas & waktu di hero */
+.badge-prioritas,
+.badge-waktu {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-prioritas.prioritas-vip {
+  background: #ffd66b;
+  border-color: #ffd66b;
+  color: #5b4400;
+}
+
+.badge-prioritas.prioritas-disabilitas {
+  background: #b8e6f5;
+  border-color: #b8e6f5;
+  color: #0b3d66;
+}
+
+.badge-prioritas.prioritas-lansia {
+  background: #cdeedd;
+  border-color: #cdeedd;
+  color: #0b3d66;
+}
+
+.badge-prioritas.prioritas-normal {
+  background: #fff;
+  border-color: #fff;
+  color: #0b3d66;
+}
+
+/* Judul section panel layar */
+.seksi-panel-layar {
+  margin: 0;
+}
+
+.layar-grid-judul {
+  margin: 0 0 16px;
+  color: #174b7a;
+  font-size: clamp(18px, 2.4vw, 24px);
+  font-weight: 700;
+}
+
+/* Grid kartu status per layanan */
+.grid-layar-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+/* Pesan kosong khusus panel layar (tidak memengaruhi halaman lain) */
+.grid-layar-panel .pesan-layanan-kosong {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 40px 20px;
+  color: #8198ae;
+  font-size: 15px;
+  text-align: center;
+}
+
+/* Kartu status layanan */
+.kartu-panel-layar {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #dceef7;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.06);
+}
+
+.kartu-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #eaf3fa;
+  background: #f7fcff;
+}
+
+.nama-layanan {
+  margin: 0;
+  color: #174b7a;
+  font-size: 17px;
+  font-weight: 700;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kode-badge {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #168cc1;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.kartu-panel-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.label-status {
+  color: #8198ae;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nomor-dipanggil {
+  color: #087eb8;
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 1px;
+}
+
+.kartu-panel-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding: 14px 18px;
+  border-top: 1px solid #eaf3fa;
+  background: #fbfdff;
+}
+
+.baris-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.label-info {
+  color: #63809a;
+  font-size: 13px;
+}
+
+.nilai-berikutnya {
+  color: #174b7a;
+  font-size: 16px;
+}
+
+.sisa-antrean-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e1f5ff;
+  color: #168cc1;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Aksi header layar: indikator LIVE & tombol fullscreen */
+.layar-aksi {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border: 1px solid #bde9cd;
+  border-radius: 999px;
+  background: #f0faf4;
+  color: #15966d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22b573;
+  animation: kedip-live 2s ease-in-out infinite;
+}
+
+@keyframes kedip-live {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.tombol-fullscreen {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 1px solid #168cc1;
+  border-radius: 8px;
+  background: #fff;
+  color: #168cc1;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.tombol-fullscreen:hover {
+  background: #168cc1;
+  color: #fff;
+}
+
+.tombol-fullscreen:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
+}
+
+/* Responsif layar monitor */
+@media (max-width: 600px) {
+  .hero-panggilan {
+    padding: 26px 16px;
+    border-radius: 14px;
+  }
+
+  .hero-subjudul {
+    letter-spacing: 2px;
+  }
+
+  .kartu-panel-body {
+    padding: 16px 14px;
+  }
+
+  .kartu-panel-header,
+  .kartu-panel-footer {
+    padding: 12px 14px;
+  }
+}
+
+/* 5. HALAMAN AMBIL ANTREAN (SELF-SERVICE) */
+/* Catatan: body.halaman-ambil juga memakai aturan umum di seksi 2
+   (latar, header navbar, dan main), sama seperti halaman layar.
+   Blok ini melengkapi konten yang sebelumnya belum punya CSS. */
+
+/* Kontainer utama agar lebar form tidak melebar penuh */
+body:not(.halaman-login):not(.halaman-operator) .ambil-container {
+  max-width: 880px;
+}
+
+/* Header mengikuti lebar yang sama agar sejajar dengan card utama */
+body:not(.halaman-login):not(.halaman-operator) > .ambil-header {
+  max-width: 880px;
+}
+
+/* Link ke layar monitor pada header */
+.link-ke-layar {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #168cc1;
+  border-radius: 8px;
+  color: #168cc1;
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.link-ke-layar:hover {
+  background: #168cc1;
+  color: #fff;
+}
+
+/* Kartu utama form ambil antrean */
+.ambil-card {
+  padding: 28px;
+  border: 1px solid #dceef7;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 4px 16px rgba(49, 124, 164, 0.05);
+}
+
+.ambil-card-header {
+  margin-bottom: 22px;
+}
+
+.ambil-card-header h2 {
+  margin: 0 0 6px;
+  color: #174b7a;
+  font-size: 22px;
+}
+
+.ambil-card-header .subjudul {
+  margin: 0;
+  color: #63809a;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+#formAmbilTiket {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Seksi pilihan: hilangkan gaya default fieldset/legend */
+.seksi-pilihan {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.judul-seksi {
+  padding: 0;
+  margin-bottom: 12px;
+  color: #174b7a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Grid pilihan layanan & prioritas */
+.grid-pilihan-layanan,
+.grid-pilihan-prioritas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.grid-pilihan-layanan {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+/* Pesan kosong khusus halaman ambil antrean */
+.grid-pilihan-layanan .pesan-layanan-kosong {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 24px 16px;
+  color: #8198ae;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Radio disembunyikan visual, tetapi tetap bisa diakses keyboard */
+.item-layanan-radio,
+.item-prioritas-radio {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.item-layanan-radio input,
+.item-prioritas-radio input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+/* Kartu opsi layanan */
+.kartu-opsi-layanan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 14px;
+  border: 2px solid #e2ecf4;
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.kode-layanan {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #168cc1;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.info-layanan {
+  min-width: 0;
+}
+
+.kartu-opsi-layanan .nama-layanan {
+  margin: 0;
+  color: #174b7a;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.sisa-info {
+  margin: 4px 0 0;
+  color: #8198ae;
+  font-size: 12px;
+}
+
+/* Kartu opsi prioritas */
+.kartu-opsi-prioritas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  padding: 16px 12px;
+  border: 2px solid #e2ecf4;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.nama-prioritas {
+  color: #174b7a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.desc-prioritas {
+  margin: 0;
+  color: #8198ae;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* State hover, fokus, dan terpilih untuk kedua kartu opsi */
+.item-layanan-radio:hover .kartu-opsi-layanan,
+.item-prioritas-radio:hover .kartu-opsi-prioritas {
+  border-color: #9fd4ec;
+  background: #f7fcff;
+}
+
+.item-layanan-radio input:focus-visible + .kartu-opsi-layanan,
+.item-prioritas-radio input:focus-visible + .kartu-opsi-prioritas {
+  box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
+}
+
+.item-layanan-radio input:checked + .kartu-opsi-layanan,
+.item-prioritas-radio input:checked + .kartu-opsi-prioritas {
+  border-color: #168cc1;
+  background: #eef8fd;
+}
+
+/* Tombol cetak tiket */
+.seksi-tombol-ambil {
+  display: flex;
+}
+
+.tombol-cetak-tiket {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 9px;
+  background: linear-gradient(110deg, #20b8d0, #168fd0);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s, box-shadow 0.2s;
+}
+
+.tombol-cetak-tiket:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 4px 14px rgba(22, 143, 208, 0.2);
+}
+
+.tombol-cetak-tiket:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 143, 208, 0.3);
+}
+
+/* Pesan validasi form */
+#pesanForm {
+  min-height: 18px;
+  margin: 0;
+  color: #d1435b;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Modal struk tiket */
+.modal-struk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 45, 70, 0.55);
+}
+
+/* Penting: atribut hidden harus tetap menutup modal */
+.modal-struk-overlay[hidden] {
+  display: none;
+}
+
+.struk-tiket-card {
+  width: min(100%, 360px);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 26px 24px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.struk-header .brand-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+  font-size: 26px;
+}
+
+.struk-header h3 {
+  margin: 0;
+  color: #174b7a;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.struk-header p {
+  margin: 4px 0 0;
+  color: #8198ae;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.struk-garis {
+  margin: 14px 0;
+  border-top: 1px dashed #b9cddc;
+}
+
+.label-nomor {
+  margin: 0;
+  color: #8198ae;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.nomor-hasil {
+  margin: 6px 0 16px;
+  color: #087eb8;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.struk-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.detail-row span:first-child {
+  color: #63809a;
+  text-align: left;
+}
+
+.detail-row strong,
+.detail-row span:last-child {
+  color: #174b7a;
+  text-align: right;
+}
+
+.struk-footer-info {
+  margin: 0;
+  color: #63809a;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.struk-aksi {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.struk-aksi button {
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+.btn-cetak {
+  border: none;
+  background: linear-gradient(110deg, #20b8d0, #168fd0);
+  color: #fff;
+}
+
+.btn-cetak:hover {
+  filter: brightness(1.05);
+}
+
+.btn-tutup {
+  border: 1px solid #cfdde8;
+  background: #fff;
+  color: #4a6b8a;
+}
+
+.btn-tutup:hover {
+  background: #f2f6f9;
+}
+
+.struk-aksi button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
+}
+
+/* Responsif halaman ambil antrean */
+@media (max-width: 600px) {
+  .ambil-card {
+    padding: 20px 16px;
+  }
+
+  .grid-pilihan-layanan,
+  .grid-pilihan-prioritas {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .struk-tiket-card {
+    padding: 22px 18px;
+  }
+
+  .nomor-hasil {
+    font-size: 40px;
+  }
+
+  .struk-aksi {
+    flex-direction: column;
   }
 }
