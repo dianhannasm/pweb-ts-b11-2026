@@ -1539,6 +1539,49 @@ body.halaman-operator {
   box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
 }
 
+/* Kontrol pengumuman suara panggilan */
+.tombol-suara {
+  min-height: 38px;
+  padding: 9px 16px;
+  border: 1px solid #b9dcee;
+  border-radius: 10px;
+  background: #fff;
+  color: #168cc1;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.tombol-suara:hover:not(:disabled) {
+  background: #eaf7fd;
+}
+
+.tombol-suara:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(22, 140, 193, 0.25);
+}
+
+.tombol-suara.suara-aktif {
+  background: #168cc1;
+  border-color: #168cc1;
+  color: #fff;
+}
+
+.tombol-suara:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pesan-suara {
+  margin: 0;
+  max-width: 240px;
+  color: #63809a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 /* Responsif layar monitor */
 @media (max-width: 600px) {
   .kartu-panel-body {

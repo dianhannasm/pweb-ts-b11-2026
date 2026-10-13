@@ -96,10 +96,169 @@ const urutanPrioritasLayar: Record<string, number> = {
   Normal: 3
 };
 
+// ---- Pengumuman suara panggilan (Web Speech API, tanpa library) ----
+
+interface PanggilanAktif {
+  nomor: string;
+  nama: string;
+}
+
+const antreanSuara: string[] = [];
+const panggilanSebelumnya = new Map<string, string>();
+let suaraDidukung = false;
+let suaraDipakai = false;
+let suaraBerjalan = false;
+let suaraSiap = false;
+let acuanPanggilanTerbentuk = false;
+
+function siapkanSuara(): void {
+  // Guard: inisialisasi hanya sekali walau listener dipasang ulang
+  if (suaraSiap) return;
+  suaraSiap = true;
+
+  const tombolSuara = elemenLayar("tombolSuara", HTMLButtonElement);
+  const pesanSuara = elemenLayar("pesanSuara", HTMLParagraphElement);
+
+  suaraDidukung =
+    typeof window.speechSynthesis !== "undefined" &&
+    typeof SpeechSynthesisUtterance !== "undefined";
+
+  if (!suaraDidukung) {
+    tombolSuara.disabled = true;
+    tombolSuara.textContent = "🔇 Suara Tidak Didukung";
+    pesanSuara.textContent =
+      "Browser ini tidak mendukung pengumuman suara. Nomor antrean tetap diperbarui.";
+    return;
+  }
+
+  // Preferensi pengguna; default nonaktif (audio otomatis sering diblokir browser)
+  suaraDipakai = localStorage.getItem("suaraAntrean") === "aktif";
+  perbaruiTampilanSuara();
+
+  tombolSuara.addEventListener("click", () => {
+    try {
+      if (suaraDipakai) {
+        suaraDipakai = false;
+        antreanSuara.length = 0;
+        window.speechSynthesis.cancel();
+      } else {
+        suaraDipakai = true;
+        // Konfirmasi singkat sekaligus membuka blokir audio otomatis browser
+        antrePengumuman("Suara pengumuman aktif.");
+      }
+      localStorage.setItem("suaraAntrean", suaraDipakai ? "aktif" : "nonaktif");
+      perbaruiTampilanSuara();
+    } catch {
+      // Gangguan audio tidak boleh merusak layar monitor
+    }
+  });
+}
+
+function perbaruiTampilanSuara(): void {
+  const tombolSuara = elemenLayar("tombolSuara", HTMLButtonElement);
+  const pesanSuara = elemenLayar("pesanSuara", HTMLParagraphElement);
+
+  tombolSuara.textContent = suaraDipakai ? "🔊 Suara Aktif" : "🔇 Suara Nonaktif";
+  tombolSuara.setAttribute("aria-pressed", suaraDipakai ? "true" : "false");
+  tombolSuara.className = "tombol-suara" + (suaraDipakai ? " suara-aktif" : "");
+  pesanSuara.textContent = suaraDipakai
+    ? "Pengumuman panggilan sedang aktif."
+    : "Suara nonaktif — aktifkan untuk pengumuman panggilan.";
+}
+
+// Masukkan satu kalimat ke antrean pengumuman (berurutan, tidak bertumpuk)
+function antrePengumuman(teks: string): void {
+  if (!suaraDidukung || !suaraDipakai) return;
+  try {
+    // Pemulihan bila pengeras suara macet (onend tidak pernah terpanggil)
+    if (suaraBerjalan && !window.speechSynthesis.speaking) {
+      suaraBerjalan = false;
+    }
+    antreanSuara.push(teks);
+    lanjutkanAntreanSuara();
+  } catch {
+    // Audio gagal tidak boleh mengganggu render atau polling
+  }
+}
+
+function lanjutkanAntreanSuara(): void {
+  if (!suaraDidukung || suaraBerjalan || antreanSuara.length === 0) return;
+
+  try {
+    // Masih berbunyi: tunggu onend dari pengumuman sebelumnya
+    if (window.speechSynthesis.speaking) return;
+
+    const teks = antreanSuara.shift();
+    if (teks === undefined) return;
+
+    suaraBerjalan = true;
+
+    const u = new SpeechSynthesisUtterance(teks);
+    u.lang = "id-ID";
+    u.rate = 0.92; // tempo lebih santai agar jelas
+
+    const suaraIndonesia = window.speechSynthesis
+      .getVoices()
+      .find((v) => v.lang.toLowerCase().startsWith("id"));
+    if (suaraIndonesia !== undefined) {
+      u.voice = suaraIndonesia;
+    }
+
+    const selesai = (): void => {
+      suaraBerjalan = false;
+      lanjutkanAntreanSuara();
+    };
+    u.onend = selesai;
+    u.onerror = selesai;
+
+    window.speechSynthesis.speak(u);
+  } catch {
+    suaraBerjalan = false;
+  }
+}
+
+// Deteksi panggilan BARU dengan membandingkan data antrean antar-render.
+// Render pertama (termasuk saat halaman dibuka/refresh) hanya membentuk acuan
+// senyap, sehingga panggilan lama tidak pernah diumumkan ulang.
+function deteksiPanggilanBaru(aktifSekarang: Map<string, PanggilanAktif>): void {
+  if (!acuanPanggilanTerbentuk) {
+    acuanPanggilanTerbentuk = true;
+    aktifSekarang.forEach((nilai, kode) => panggilanSebelumnya.set(kode, nilai.nomor));
+    return;
+  }
+
+  aktifSekarang.forEach((nilai, kode) => {
+    if (panggilanSebelumnya.get(kode) !== nilai.nomor) {
+      panggilanSebelumnya.set(kode, nilai.nomor);
+      antrePengumuman(
+        `Perhatian. Nomor antrean ${nilai.nomor}, ${nilai.nama}. Silakan menuju loket pelayanan.`
+      );
+    }
+  });
+
+  // Lupakan poli yang tidak lagi memiliki tiket dipanggil, agar panggilan
+  // berikutnya (termasuk panggil ulang yang disengaja) tetap terdeteksi baru
+  panggilanSebelumnya.forEach((_, kode) => {
+    if (!aktifSekarang.has(kode)) {
+      panggilanSebelumnya.delete(kode);
+    }
+  });
+}
+
 function renderLayarMonitor(): void {
   const jenisList = bacaJenisAntreanLayar().filter((j) => j.aktif);
   const daftarTiket = bacaDaftarTiketLayar();
   const panelLayanan = elemenLayar("panelLayanan", HTMLDivElement);
+
+  // Kumpulkan tiket "Dipanggil" per poli untuk deteksi panggilan baru.
+  // Hanya membaca data — status, prioritas, nomor, dan riwayat tidak diubah.
+  const aktifPerPoli = new Map<string, PanggilanAktif>();
+  daftarTiket.forEach((tiket) => {
+    if (tiket.status === "Dipanggil") {
+      aktifPerPoli.set(tiket.kode, { nomor: tiket.nomor, nama: tiket.namaLayanan });
+    }
+  });
+  deteksiPanggilanBaru(aktifPerPoli);
 
   // Render Panel Layar per Jenis Antrean Aktif
   panelLayanan.replaceChildren();
@@ -243,6 +402,9 @@ function inisialisasiLayar(): void {
       tombolFullscreen.textContent = "⛶ Layar Penuh";
     }
   });
+
+  // Kontrol pengumuman suara (aktif/nonaktif + indikator)
+  siapkanSuara();
 
   // Render awal
   renderLayarMonitor();
