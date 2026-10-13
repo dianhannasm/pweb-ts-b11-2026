@@ -122,17 +122,16 @@ function siapkanSuara(): void {
   suaraSiap = true;
 
   const tombolSuara = elemenLayar("tombolSuara", HTMLButtonElement);
-  const pesanSuara = elemenLayar("pesanSuara", HTMLParagraphElement);
 
   suaraDidukung =
     typeof window.speechSynthesis !== "undefined" &&
     typeof SpeechSynthesisUtterance !== "undefined";
 
   if (!suaraDidukung) {
+    // Teks status di header sudah dihapus dari halaman; status tetap
+    // tersampaikan lewat label & keadaan tombol suara.
     tombolSuara.disabled = true;
     tombolSuara.textContent = "🔇 Suara Tidak Didukung";
-    pesanSuara.textContent =
-      "Browser ini tidak mendukung pengumuman suara. Nomor antrean tetap diperbarui.";
     return;
   }
 
@@ -161,14 +160,12 @@ function siapkanSuara(): void {
 
 function perbaruiTampilanSuara(): void {
   const tombolSuara = elemenLayar("tombolSuara", HTMLButtonElement);
-  const pesanSuara = elemenLayar("pesanSuara", HTMLParagraphElement);
 
+  // Indikator status audio ada di tombol ini (label, aria-pressed, kelas);
+  // paragraf teks status sudah dihapus dari header halaman layar.
   tombolSuara.textContent = suaraDipakai ? "🔊 Suara Aktif" : "🔇 Suara Nonaktif";
   tombolSuara.setAttribute("aria-pressed", suaraDipakai ? "true" : "false");
   tombolSuara.className = "tombol-suara" + (suaraDipakai ? " suara-aktif" : "");
-  pesanSuara.textContent = suaraDipakai
-    ? "Pengumuman panggilan sedang aktif."
-    : "Suara nonaktif — aktifkan untuk pengumuman panggilan.";
 }
 
 // Masukkan satu kalimat ke antrean pengumuman (berurutan, tidak bertumpuk)
